@@ -27,14 +27,138 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <style>
-        body, h2, h4, p, ul {
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
 }
 
 .container {
     display: flex;
-    height: 100vh; 
+    height: 100vh;
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
+h1 {
+    color: #030303;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Form container to align both forms side by side */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* space between forms */
+    margin-top: 20px;
+}
+
+/* Form styles */
+form {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form labels */
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 16px;
+}
+
+/* Dropdown styles */
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Button styles */
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ced4da;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: #00d4ff;
+    font-weight: bold;
+}
+
+td select {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* Table row hover effect */
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
 }
 
 /* Sidebar styles */
@@ -49,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     margin-bottom: 20px;
     text-align: center;
 }
+
 .header-content {
     display: flex; 
     justify-content: space-between; 
@@ -57,6 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     padding-bottom: 10px; 
     margin-bottom: 10px; 
 }
+
 /* Search Bar Styles */
 .search-bar {
     display: flex;
@@ -146,6 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     margin-right: auto; 
     border-radius: 100px;
 }
+
 .main-content {
     flex: 1;
     padding: 20px;
@@ -158,44 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     justify-content: space-between;
     align-items: center;
 }
-/* Card container styles */
-.card-container {
-    display: flex;
-    justify-content: center; 
-    flex-wrap: wrap; 
-    gap: 20px; 
-    margin-top: 20px; 
-}
 
-/* Dashboard card styles */
-.dashboard-card {
-    background-color: #8cf1f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    min-width: 200px;
-    flex: 1 0 200px; 
-    max-width: 250px; 
-}
-
-.dashboard-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.dashboard-title {
-    font-size: 16px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    color: #6c757d; 
-}
-
-.dashboard-value {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333; 
-}
     </style>
 </head>
 <body>
@@ -228,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <button class="search-button"><i class="fas fa-search"></i></button>
                     </div>
                     <div class="profile-bar">
-                        <img src="profile.png" alt="Profile Picture" class="profile-picture">
+                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture">
                         <div class="profile-info">
                             <h5 class="profile-name">Name</h5>
                             <p class="profile-role">Teacher</p>
@@ -238,88 +328,88 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <!-- HTML Form for Attendance -->
-            <form method="POST" action="attendance.php">
-                <label for="section">Select Section:</label>
-                <select name="section" required>
-                    <option value="">--select--</option>
-                    <?php
-                    $section_query = "SELECT id, section_name FROM sections";
-                    $sections = $conn->query($section_query);
-                    while ($section = $sections->fetch_assoc()) {
-                        echo "<option value='{$section['id']}'>{$section['section_name']}</option>";
+            <div class="form-container">
+                <form method="POST" action="attendance.php">
+                    <label for="section">Select Section:</label>
+                    <select name="section" required>
+                        <option value="">--select--</option>
+                        <?php
+                        $section_query = "SELECT id, section_name FROM sections";
+                        $sections = $conn->query($section_query);
+                        while ($section = $sections->fetch_assoc()) {
+                            echo "<option value='{$section['id']}'>{$section['section_name']}</option>";
+                        }
+                        ?>
+                    </select>
+
+                    <label for="subject">Select Subject:</label>
+                    <select name="subject" required>
+                        <option value="">--select--</option>
+                        <?php
+                        $subject_query = "SELECT id, subject_name FROM subjects";
+                        $subjects = $conn->query($subject_query);
+                        while ($subject = $subjects->fetch_assoc()) {
+                            echo "<option value='{$subject['id']}'>{$subject['subject_name']}</option>";
+                        }
+                        ?>
+                    </select>
+
+                    <button type="submit">Load Students</button>
+                </form>
+
+                <?php
+                // Validate inputs to prevent SQL injection
+                if ($section_id && $subject_id) {
+                    // Prepare statement to prevent SQL injection
+                    $subject_query = "SELECT subject_name FROM subjects WHERE id = ?";
+                    $stmt_subject = $conn->prepare($subject_query);
+                    $stmt_subject->bind_param('i', $subject_id);
+                    $stmt_subject->execute();
+                    $stmt_subject->bind_result($subject_name);
+                    $stmt_subject->fetch();
+                    $stmt_subject->close();
+
+                    // Query to get the students in the selected section
+                    $students_query = "SELECT id, name FROM students WHERE section_id = ?";
+                    $stmt_students = $conn->prepare($students_query);
+                    $stmt_students->bind_param('i', $section_id);
+                    $stmt_students->execute();
+                    $students = $stmt_students->get_result();
+
+                    // Display attendance form for students
+                    if ($students->num_rows > 0) {
+                        echo "<form method='POST' action='save_attendance.php'>";
+                        echo "<table>";
+                        echo "<tr><th>Student Name</th><th>Subject</th><th>Attendance</th></tr>";
+
+                        while ($row = $students->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>{$row['name']}</td>";
+                            echo "<td>$subject_name</td>"; // Display the selected subject in the table
+                            echo "<td>
+                                    <select name='attendance[{$row['id']}]' required>
+                                        <option value=''>Select Attendance</option>
+                                        <option value='Present'>Present</option>
+                                        <option value='Absent'>Absent</option>
+                                        <option value='Late'>Late</option>
+                                    </select>
+                                  </td>";
+                            echo "</tr>";
+                        }
+
+                        echo "</table>";
+                        echo "<button type='submit'>Submit Attendance</button>";
+                        echo "<button type='submit'>Send Email</button>";
+                        echo "</form>";
+                    } else {
+                        echo "No students found in the selected section.";
                     }
-                    ?>
-                </select>
-
-                <label for="subject">Select Subject:</label>
-                <select name="subject" required>
-                    <option value="">--select--</option>
-                    <?php
-                    $subject_query = "SELECT id, subject_name FROM subjects";
-                    $subjects = $conn->query($subject_query);
-                    while ($subject = $subjects->fetch_assoc()) {
-                        echo "<option value='{$subject['id']}'>{$subject['subject_name']}</option>";
-                    }
-                    ?>
-                </select>
-
-                <button type="submit">Load Students</button>
-            </form>
-            <?php
-            // Validate inputs to prevent SQL injection
-            if ($section_id && $subject_id) {
-                // Prepare statement to prevent SQL injection
-                $subject_query = "SELECT subject_name FROM subjects WHERE id = ?";
-                $stmt_subject = $conn->prepare($subject_query);
-                $stmt_subject->bind_param('i', $subject_id);
-                $stmt_subject->execute();
-                $stmt_subject->bind_result($subject_name);
-                $stmt_subject->fetch();
-                $stmt_subject->close();
-
-                // Query to get the students in the selected section
-                $students_query = "SELECT id, name FROM students WHERE section_id = ?";
-                $stmt_students = $conn->prepare($students_query);
-                $stmt_students->bind_param('i', $section_id);
-                $stmt_students->execute();
-                $students = $stmt_students->get_result();
-
-                // Display attendance form for students
-                if ($students->num_rows > 0) {
-                    echo "<form method='POST' action='save_attendance.php'>";
-                    echo "<table>";
-                    echo "<tr><th>Student Name</th><th>Subject</th><th>Attendance</th></tr>";
-
-                    while ($row = $students->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>{$row['name']}</td>";
-                        echo "<td>$subject_name</td>"; // Display the selected subject in the table
-                        echo "<td>
-                                <select name='attendance[{$row['id']}]' required>
-                                    <option value=''>Select Attendance</option>
-                                    <option value='Present'>Present</option>
-                                    <option value='Absent'>Absent</option>
-                                    <option value='Late'>Late</option>
-                                </select>
-                              </td>";
-                        echo "</tr>";
-                    }
-
-                    echo "</table>";
-                    echo "<button type='submit'>Submit Attendance</button>";
-                    echo "<button type='submit'>Send Email</button>";
-                    echo "</form>";
-                } else {
-                    echo "No students found in the selected section.";
+                } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    echo "Invalid input!";
                 }
-            } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                echo "Invalid input!";
-            }
-            ?>
+                ?>
+            </div>
         </main>
     </div>
-
-    <!-- FullCalendar JS -->
-    <script src="js/dashboard.js"></script>
 </body>
 </html>
