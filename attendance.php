@@ -398,8 +398,6 @@ tr:hover {
                         }
 
                         echo "</table>";
-                        echo "<button type='submit'>Submit Attendance</button>";
-                        echo "<button type='submit'>Send Email</button>";
                         echo "</form>";
                     } else {
                         echo "No students found in the selected section.";
@@ -409,6 +407,8 @@ tr:hover {
                 }
                 ?>
             </div>
+            <button type='submit'>Save Attendance</button>
+            <button type='submit'>Send Email</button>
         </main>
     </div>
 </body>

@@ -203,37 +203,6 @@ $sections_result = $conn->query($sections_query);
     height: auto;   
 }
 
-
-/* Announcements Section */
-.announcements h3{
-    flex: 1; 
-    margin-right: 20px; 
-    background-color: #f8f9fa; 
-    text-align: center;
-}
-.announcements {
-    flex: 1; 
-    margin-right: 20px; 
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-}
-.announcements li{
-    margin-left: 10px;
-}
-/* Calendar Section */
-.calendar {
-    flex: 1; 
-    padding: 20px; 
-    background-color: #f8f9fa; 
-    border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-}
-.calendar h3{
-    flex: 1;
-    text-align: center;
-}
     </style>
 </head>
 <body>
