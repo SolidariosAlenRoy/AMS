@@ -269,7 +269,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
                         <button class="search-button"><i class="fas fa-search"></i></button>
                     </div>
                     <div class="profile-bar">
-                        <img src="profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
+                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
                             <h5 class="profile-name">Name</h5>
                             <p class="profile-role">Teacher</p>
