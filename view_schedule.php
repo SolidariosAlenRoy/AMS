@@ -53,9 +53,9 @@ body {
     padding: 10px; 
     border: 1px solid #ced4da; 
     border-radius: 5px; 
-    width: 300px;
+    width: 1050px;
     height: 20px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .search-button {
@@ -190,7 +190,7 @@ h1 {
     font-weight: bold;
 }
     </style>
-    
+
 <body>
 <div class="container">
         <!-- Sidebar -->
