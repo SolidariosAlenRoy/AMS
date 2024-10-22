@@ -26,7 +26,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
-        body, h2, h4, p, ul {
+body, h2, h4, p, ul {
     margin: 0;
     padding: 0;
 }
@@ -243,21 +243,21 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <!-- Logo -->
-            <img src="image/classtrack.png" alt="Logo" class="logo"> 
-            <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
-            <nav class="nav">
-                <ul>
-                    <li><a href="teacherint.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="vclasslist.php">View Class List</a></li>
-                    <li><a href="attendance.php">Take Attendance</a></li>
-                    <li><a href="view_class_attendance.php">View Class Attendance</a></li>
-                    <li><a href="view_student_attendance.php">View Student Attendance</a></li>
-                    <li><a href="today_attendance.php">Today's Attendance Report</a></li>
-                    <li><a href="absent_notification.php">Generate Absent Notification</a></li>
-                </ul>
-            </nav>
-        </aside>
+    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
+    <nav class="nav">
+        <ul>
+            <li><a href="teacherint.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="vclasslist.php"><i class="fas fa-list-alt"></i> View Class List</a></li>
+            <li><a href="attendance.php"><i class="fas fa-user-check"></i> Take Attendance</a></li>
+            <li><a href="view_class_attendance.php"><i class="fas fa-eye"></i> View Class Attendance</a></li>
+            <li><a href="view_student_attendance.php"><i class="fas fa-user-graduate"></i> View Student Attendance</a></li>
+            <li><a href="today_attendance.php"><i class="fas fa-calendar-day"></i> Today's Attendance Report</a></li>
+            <li><a href="absent_notification.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>
+        </ul>
+    </nav>
+</aside>
+
 
         <!-- Main Content -->
         <main class="main-content">
@@ -295,10 +295,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
 
                 <!-- Schedule Card -->
                 <div class="dashboard-card">
-                    <div class="dashboard-icon text-success"><i class="fa-light fa-calendar-days" style="color: #050505;"></i></div>
+                    <div class="dashboard-icon text-success">
+                    <i class="fas fa-calendar-alt"></i>
+                    </div>
                     <div class="dashboard-title">Schedule</div>
+                    <a href="view_schedule.php" class="btn btn-primary" style="display: block; margin-top: 10px; text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px; background-color: #007bff; text-align: center;">View Schedule</a>
                 </div>
-            </div>
 
             <div class="info-container">
                 <!-- Recent Announcements -->
