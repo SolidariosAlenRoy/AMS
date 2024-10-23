@@ -1,17 +1,19 @@
-    <?php
-    session_start();
-    require 'db.php';
+<?php
+session_start();
+require 'db.php';
 
-    // Initialize variables
-    $section_id = null;
-    $subject_id = null;
+// Initialize variables
+$section_id = null;
+$subject_id = null;
+$year_level = null; // Add year level variable
 
-    // Display students based on selected section and subject
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $section_id = $_POST['section'];
-        $subject_id = $_POST['subject'];
-    }
-    ?>
+// Display students based on selected section, subject, and year level
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $section_id = $_POST['section'];
+    $subject_id = $_POST['subject'];
+    $year_level = $_POST['year_level']; // Capture year level
+}
+?>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -337,38 +339,61 @@ button:hover {
                 </div>
                 
                 <!-- HTML Form for Attendance -->
-                <div class="form-container">
-                    <form method="POST" action="attendance.php">
-                        <label for="section">Select Section:</label>
-                        <select name="section" required>
-                            <option value="">--select--</option>
-                            <?php
-                            $section_query = "SELECT id, section_name FROM sections";
-                            $sections = $conn->query($section_query);
-                            while ($section = $sections->fetch_assoc()) {
-                                echo "<option value='{$section['id']}'>{$section['section_name']}</option>";
-                            }
-                            ?>
-                        </select>
-
-                        <label for="subject">Select Subject:</label>
-                        <select name="subject" required>
-                            <option value="">--select--</option>
-                            <?php
-                            $subject_query = "SELECT id, subject_name FROM subjects";
-                            $subjects = $conn->query($subject_query);
-                            while ($subject = $subjects->fetch_assoc()) {
-                                echo "<option value='{$subject['id']}'>{$subject['subject_name']}</option>";
-                            }
-                            ?>
-                        </select>
-
-                        <button type="submit">Load Students</button>
-                    </form>
-
+        <div class="form-container">
+            <form method="POST" action="attendance.php">
+                <label for="year_level">Select Year Level:</label>
+                <select name="year_level" required>
+                    <option value="">--select--</option>
                     <?php
-                    // Validate inputs to prevent SQL injection
-                    if ($section_id && $subject_id) {
+                    $year_level_query = "SELECT DISTINCT year_level FROM students";
+                    $year_levels = $conn->query($year_level_query);
+                    while ($year = $year_levels->fetch_assoc()) {
+                        echo "<option value='{$year['year_level']}'>{$year['year_level']}</option>";
+                    }
+                    ?>
+                </select>
+
+                <label for="section">Select Section:</label>
+                <select name="section" required>
+                    <option value="">--select--</option>
+                    <?php
+                    $section_query = "SELECT id, section_name FROM sections";
+                    $sections = $conn->query($section_query);
+                    while ($section = $sections->fetch_assoc()) {
+                        echo "<option value='{$section['id']}'>{$section['section_name']}</option>";
+                    }
+                    ?>
+                </select>
+
+                <label for="subject">Select Subject:</label>
+                <select name="subject" required>
+                    <option value="">--select--</option>
+                    <?php
+                    $subject_query = "SELECT id, subject_name FROM subjects";
+                    $subjects = $conn->query($subject_query);
+                    while ($subject = $subjects->fetch_assoc()) {
+                        echo "<option value='{$subject['id']}'>{$subject['subject_name']}</option>";
+                    }
+                    ?>
+                </select>
+
+                <button type="submit">Load Students</button>
+            </form>
+
+            <!-- Empty table structure -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Year Level</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (isset($section_id, $subject_id, $year_level)) {
                         // Prepare statement to prevent SQL injection
                         $subject_query = "SELECT subject_name FROM subjects WHERE id = ?";
                         $stmt_subject = $conn->prepare($subject_query);
@@ -378,23 +403,24 @@ button:hover {
                         $stmt_subject->fetch();
                         $stmt_subject->close();
 
-                        // Query to get the students in the selected section
-                        $students_query = "SELECT id, name FROM students WHERE section_id = ?";
+                        // Query to get the students in the selected section and year level
+                        $students_query = "
+                            SELECT s.id, s.name, s.year_level, sec.section_name 
+                            FROM students s 
+                            JOIN sections sec ON s.section_id = sec.id 
+                            WHERE sec.id = ? AND s.year_level = ?";
                         $stmt_students = $conn->prepare($students_query);
-                        $stmt_students->bind_param('i', $section_id);
+                        $stmt_students->bind_param('is', $section_id, $year_level);
                         $stmt_students->execute();
                         $students = $stmt_students->get_result();
 
-                        // Display attendance form for students
                         if ($students->num_rows > 0) {
-                            echo "<form method='POST' action='save_attendance.php'>";
-                            echo "<table>";
-                            echo "<tr><th>Student Name</th><th>Subject</th><th>Attendance</th></tr>";
-
                             while ($row = $students->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td>{$row['name']}</td>";
-                                echo "<td>$subject_name</td>"; // Display the selected subject in the table
+                                echo "<td>{$row['year_level']}</td>";
+                                echo "<td>{$row['section_name']}</td>";
+                                echo "<td>$subject_name</td>";
                                 echo "<td>
                                         <select name='attendance[{$row['id']}]' required>
                                             <option value=''>Select Attendance</option>
@@ -402,24 +428,21 @@ button:hover {
                                             <option value='Absent'>Absent</option>
                                             <option value='Late'>Late</option>
                                         </select>
-                                    </td>";
+                                      </td>";
                                 echo "</tr>";
                             }
-
-                            echo "</table>";
-                            echo "</form>";
                         } else {
-                            echo "No students found in the selected section.";
+                            echo "<tr><td colspan='5'>No students found in the selected section and year level.</td></tr>";
                         }
-                    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        echo "Invalid input!";
+                    } else {
+                        // Show empty rows until the section and year level are selected
+                        echo "<tr><td colspan='5'>Please select a section, year level, and subject to load students.</td></tr>";
                     }
                     ?>
-                </div>
-                <div class="buttons-container">
-                   <button type="submit">Save Attendance</button>
-                   <button type="submit">Send Email</button>
-                </div>
+                </tbody>
+            </table>
+
+        </div>
 
             </main>
         </div>

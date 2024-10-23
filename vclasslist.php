@@ -5,6 +5,10 @@ session_start();
 // Fetch sections for the dropdown menu
 $sections_query = "SELECT * FROM sections";
 $sections_result = $conn->query($sections_query);
+
+// Fetch distinct year levels from the students table
+$year_levels_query = "SELECT DISTINCT year_level FROM students";
+$year_levels_result = $conn->query($year_levels_query);
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +23,7 @@ $sections_result = $conn->query($sections_query);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+    
    
    <style>
 body, h2, h4, p, ul {
@@ -268,48 +273,75 @@ th {
             </div>
 
             <form method="POST" id="sectionForm">
-                <label for="section">Select Section:</label>
-                <select name="section" id="sectionDropdown" required>
-                    <option value="">Select Section</option>
-                    <?php while ($row = $sections_result->fetch_assoc()) : ?>
-                        <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </form>
+            <label for="yearLevelDropdown">Select Year Level:</label>
+            <select name="year_level" id="yearLevelDropdown" required>
+                <option value="">Select Year Level</option>
+                <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
+                <?php endwhile; ?>
+            </select>
 
-            <div id="classList">
-                <!-- The class list will be dynamically loaded here -->
-            </div>
-        </main>
-    </div>
+            <label for="section">Select Section:</label>
+            <select name="section" id="sectionDropdown" required>
+                <option value="">Select Section</option>
+                <?php while ($row = $sections_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
+                <?php endwhile; ?>
+            </select>
+        </form>
 
-    <script>
-        $(document).ready(function() {
-            // Load the class list when the section is selected
-            $('#sectionDropdown').change(function() {
-                var sectionId = $(this).val();
-                if (sectionId) {
-                    loadClassList(sectionId, 1); // Load page 1 by default
-                }
-            });
+        <div id="classList">
+            <!-- Empty table structure -->
+            <table id="classListTable">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Year Level</th>
+                        <th>Section</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Please select a year level and section.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
 
-            // Function to load class list with pagination
-            function loadClassList(sectionId, page) {
-                $.ajax({
-                    url: 'fetch.php',
-                    type: 'POST',
-                    data: {section_id: sectionId, page: page},
-                    success: function(response) {
-                        $('#classList').html(response); // Display the response in the class list div
-                        // Add event listener for pagination buttons
-                        $('.pagination-btn').on('click', function() {
-                            var selectedPage = $(this).data('page');
-                            loadClassList(sectionId, selectedPage);
-                        });
-                    }
-                });
+<script>
+    $(document).ready(function() {
+        // Load the class list when either dropdown is changed
+        $('#sectionDropdown, #yearLevelDropdown').change(function() {
+            var sectionId = $('#sectionDropdown').val();
+            var yearLevel = $('#yearLevelDropdown').val();
+            if (sectionId && yearLevel) {
+                loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
+            } else {
+                // If no selection, reset the table to default message
+                $('#classListTable tbody').html('<tr><td colspan="4" style="text-align: center;">Please select a year level and section.</td></tr>');
             }
         });
-    </script>
+
+        // Function to load class list with pagination
+        function loadClassList(sectionId, yearLevel, page) {
+            $.ajax({
+                url: 'fetch.php',
+                type: 'POST',
+                data: {section_id: sectionId, year_level: yearLevel, page: page},
+                success: function(response) {
+                    $('#classList').html(response); // Replace the table with the new class list data
+                    // Add event listener for pagination buttons
+                    $('.pagination-btn').on('click', function() {
+                        var selectedPage = $(this).data('page');
+                        loadClassList(sectionId, yearLevel, selectedPage);
+                    });
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

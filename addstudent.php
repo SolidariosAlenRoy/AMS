@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $parent_email = $_POST['parent_email'];
     $contact_number = $_POST['contact_number'];
+    $year_level = $_POST['year_level']; // Capture year level from dropdown
     $section_name = $_POST['section']; // Text field for section name
     $subjects = isset($_POST['subjects']) ? $_POST['subjects'] : [];
 
@@ -31,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $section_id = $conn->insert_id;
     }
 
-    // Insert student data with the valid section_id
-    $query = "INSERT INTO students (name, parent_email, contact_number, section_id) VALUES (?, ?, ?, ?)";
+    // Insert student data with the valid section_id and year_level
+    $query = "INSERT INTO students (name, parent_email, contact_number, year_level, section_id) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('sssi', $name, $parent_email, $contact_number, $section_id);
+    $stmt->bind_param('sssii', $name, $parent_email, $contact_number, $year_level, $section_id);
 
     if ($stmt->execute()) {
         $student_id = $conn->insert_id;
@@ -53,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -275,10 +277,21 @@ body, h2, h4, p, ul {
                     </div>
                 </div>
             </div>
+            
             <form method="POST" action="addstudent.php">
     <input type="text" name="name" placeholder="Student Name" required>
     <input type="email" name="parent_email" placeholder="Parent's Email">
     <input type="text" name="contact_number" placeholder="Contact Number">
+
+    <!-- Dropdown for selecting year level -->
+    <label for="year_level">Select Year Level:</label>
+    <select name="year_level" required>
+        <option value="">-- Select Year Level --</option>
+        <option value="7">Grade 7</option>
+        <option value="8">Grade 8</option>
+        <option value="9">Grade 9</option>
+        <option value="10">Grade 10</option>
+    </select>
 
     <!-- Text field for entering section -->
     <label for="section">Enter Section:</label>
@@ -298,6 +311,7 @@ body, h2, h4, p, ul {
 
     <button type="submit">Add Student</button>
 </form>
+
         </main>
         
     </div>

@@ -1,25 +1,58 @@
 <?php
 require 'db.php'; // Include your database connection
 
-// Initialize section filter
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Initialize filters
 $selected_section = isset($_GET['section']) ? $_GET['section'] : '';
+$selected_year_level = isset($_GET['year_level']) ? $_GET['year_level'] : '';
 
 // Fetch all sections for the dropdown
 $sections_query = "SELECT * FROM sections";
 $sections_result = $conn->query($sections_query);
 
-// Fetch all students based on selected section
-$query = "SELECT students.id, students.name, students.parent_email, students.contact_number, sections.section_name 
+// Fetch all unique year levels for the dropdown
+$year_levels_query = "SELECT DISTINCT year_level FROM students";
+$year_levels_result = $conn->query($year_levels_query);
+
+// Fetch all students based on selected section and year level
+$query = "SELECT students.id, students.name, students.parent_email, students.contact_number, students.year_level, sections.section_name 
           FROM students 
           LEFT JOIN sections ON students.section_id = sections.id";
 
-// Apply section filter if a section is selected
+// Apply filters if selected
+$filters = [];
 if ($selected_section) {
-    $query .= " WHERE sections.id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $selected_section);
-} else {
-    $stmt = $conn->prepare($query);
+    $filters[] = "sections.id = ?";
+}
+if ($selected_year_level) {
+    $filters[] = "students.year_level = ?";
+}
+
+// Combine filters into the query if they exist
+if (!empty($filters)) {
+    $query .= " WHERE " . implode(' AND ', $filters);
+}
+
+$stmt = $conn->prepare($query);
+
+// Bind parameters based on selected filters
+if (!empty($filters)) {
+    $param_types = str_repeat('i', count($filters)); // assuming section_id and year_level are integers
+    $params = [];
+    
+    if ($selected_section) {
+        $params[] = $selected_section;
+    }
+    if ($selected_year_level) {
+        $params[] = $selected_year_level;
+    }
+
+    // Bind parameters dynamically
+    $stmt->bind_param($param_types, ...$params);
 }
 
 $stmt->execute();
@@ -44,6 +77,7 @@ if (isset($_GET['delete_id'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -266,52 +300,64 @@ body, h2, h4, p, ul {
                     </div>
                 </div>
             </div>
+            
             <form class="filter-form" method="GET" action="classlist.php">
-    <label for="section">Filter by Section:</label>
-    <select name="section" id="section" onchange="this.form.submit()">
-        <option value="">All Sections</option>
-        <?php
-        // Populate section options
-        while ($section = $sections_result->fetch_assoc()) {
-            $selected = ($selected_section == $section['id']) ? 'selected' : '';
-            echo "<option value='" . htmlspecialchars($section['id']) . "' $selected>" . htmlspecialchars($section['section_name']) . "</option>";
-        }
-        ?>
-    </select>
-</form>
+                <label for="year_level">Select Year Level:</label>
+                <select name="year_level" id="year_level" onchange="this.form.submit()">
+                    <option value="">All Year Levels</option>
+                    <?php
+                    // Populate year level options
+                    while ($year_level = $year_levels_result->fetch_assoc()) {
+                        $selected = ($selected_year_level == $year_level['year_level']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($year_level['year_level']) . "' $selected>" . htmlspecialchars($year_level['year_level']) . "</option>";
+                    }
+                    ?>
+                </select>
 
-<table>
-    <thead>
-        <tr>
-            <th>Student Name</th>
-            <th>Parent's Email</th>
-            <th>Contact Number</th>
-            <th>Section</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Display each student in a table row
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['parent_email']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['contact_number']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['section_name']) . "</td>";
-                echo "<td>
-                        <a href='editstudent.php?id=" . $row['id'] . "' class='edit-btn'>Edit</a>
-                        <a href='classlist.php?delete_id=" . $row['id'] . "' class='delete-btn' onclick='return confirm(\"Are you sure you want to delete this student?\");'>Delete</a>
-                     </td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='5'>No students found</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+                <label for="section">Select Section:</label>
+                <select name="section" id="section" onchange="this.form.submit()">
+                    <option value="">All Sections</option>
+                    <?php
+                    // Populate section options
+                    while ($section = $sections_result->fetch_assoc()) {
+                        $selected = ($selected_section == $section['id']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($section['id']) . "' $selected>" . htmlspecialchars($section['section_name']) . "</option>";
+                    }
+                    ?>
+                </select>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Parent Email</th>
+                        <th>Contact Number</th>
+                        <th>Year Level</th> <!-- Add Year Level column -->
+                        <th>Section</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['parent_email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['contact_number']); ?></td>
+                            <td><?php echo htmlspecialchars($row['year_level']); ?></td> <!-- Display Year Level -->
+                            <td><?php echo htmlspecialchars($row['section_name']); ?></td>
+                            <td>
+                            <a href="editstudent.php?id=<?php echo $row['id']; ?>">Edit</a> | 
+                            <a href="classlist.php?delete_id=<?php echo $row['id']; ?>"onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+
+
         </main> 
     </div>
 

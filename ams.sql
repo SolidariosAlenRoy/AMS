@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2024 at 06:54 PM
+-- Generation Time: Oct 23, 2024 at 10:45 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -52,7 +52,7 @@ CREATE TABLE `students` (
   `parent_email` varchar(100) DEFAULT NULL,
   `contact_number` varchar(15) DEFAULT NULL,
   `section_id` int(11) DEFAULT NULL,
-  `year_level` enum('Grade 7','Grade 8','Grade 9','Grade 10') NOT NULL
+  `year_level` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -60,8 +60,8 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `name`, `parent_email`, `contact_number`, `section_id`, `year_level`) VALUES
-(10, 'Alen Roy Solidarios', 'roy@gmail.com', '1234567', 1, 'Grade 7'),
-(11, 'jumila magtahas', 'jum@gmail.com', '12345', 2, 'Grade 7');
+(18, 'Alen Roy Solidarios', 'roy@gmail.com', '12345', 1, 'Grade 7'),
+(19, 'jumila magtahas', 'jum@gmail.com', '1234567', 2, 'Grade 7');
 
 -- --------------------------------------------------------
 
@@ -79,16 +79,16 @@ CREATE TABLE `student_subjects` (
 --
 
 INSERT INTO `student_subjects` (`student_id`, `subject_id`) VALUES
-(10, 6),
-(10, 7),
-(10, 8),
-(10, 9),
-(10, 10),
-(11, 6),
-(11, 7),
-(11, 8),
-(11, 9),
-(11, 10);
+(18, 6),
+(18, 7),
+(18, 8),
+(18, 9),
+(18, 10),
+(19, 6),
+(19, 7),
+(19, 8),
+(19, 9),
+(19, 10);
 
 -- --------------------------------------------------------
 
@@ -209,7 +209,7 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `subjects`
