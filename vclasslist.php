@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require 'db.php'; // Ensure this file contains the correct database connection
 session_start();
 
 // Fetch sections for the dropdown menu
@@ -9,6 +9,11 @@ $sections_result = $conn->query($sections_query);
 // Fetch distinct year levels from the students table
 $year_levels_query = "SELECT DISTINCT year_level FROM students";
 $year_levels_result = $conn->query($year_levels_query);
+
+// Check if queries succeeded
+if (!$sections_result || !$year_levels_result) {
+    die("Error fetching data: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,265 +24,247 @@ $year_levels_result = $conn->query($year_levels_query);
     <title>View Class List</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <!-- FullCalendar CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     
-   
-   <style>
-body, h2, h4, p, ul {
-    margin: 0;
-    padding: 0;
-}
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
 
-.container {
-    display: flex;
-    height: 100vh; 
-}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 
-/* Sidebar styles */
-.sidebar {
-    width: 200px; 
-    background-color: #e0e0e0;
-    padding: 20px;
-}
+    <style>
+        body, h2, h4, p, ul {
+            margin: 0;
+            padding: 0;
+        }
 
-.sidebar h4 {
-    color: black; 
-    margin-bottom: 20px;
-    text-align: center;
-}
+        .container {
+            display: flex;
+            height: 100vh;
+        }
 
-.header-content {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    border-bottom: 1px solid #ced4da; 
-    padding-bottom: 10px; 
-    margin-bottom: 10px; 
-}
+        .sidebar {
+            width: 200px;
+            background-color: #e0e0e0;
+            padding: 20px;
+        }
 
-.search-bar {
-    display: flex;
-    align-items: center; 
-}
+        .sidebar h4 {
+            color: black;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-.search-input {
-    flex-grow: 1; 
-    padding: 10px; 
-    border: 1px solid #ced4da; 
-    border-radius: 5px; 
-    width: 300px;
-    height: 20px;
-    margin-right: 5px;
-}
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ced4da;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
 
-.search-button {
-    background-color: #007bff; 
-    color: #fff; 
-    border: none;
-    padding: 10px 15px; 
-    border-radius: 5px; 
-    cursor: pointer;
-}
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
 
-.search-button i {
-    margin: 0;
-}
+        .search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            width: 300px;
+            height: 20px;
+            margin-right: 5px;
+        }
 
-/* Profile Bar */
-.profile-bar {
-    display: flex; 
-    align-items: center; 
-    margin-left: 20px; 
-    border-left: 1px solid #ced4da; 
-    padding-left: 20px; 
-}
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.profile-picture {
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%; 
-    margin-right: 10px; 
-}
+        .profile-bar {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            border-left: 1px solid #ced4da;
+            padding-left: 20px;
+        }
 
-.profile-info {
-    text-align: left; 
-}
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
-.profile-name {
-    font-size: 16px; 
-    margin: 0; 
-}
+        .profile-info {
+            text-align: left;
+        }
 
-.profile-role {
-    font-size: 12px;
-    color: #6c757d;
-}
+        .profile-name {
+            font-size: 16px;
+            margin: 0;
+        }
 
-.nav {
-    margin-top: 20px;
-}
+        .profile-role {
+            font-size: 12px;
+            color: #6c757d;
+        }
 
-.nav ul {
-    list-style: none; 
-}
+        .nav {
+            margin-top: 20px;
+        }
 
-.nav ul li {
-    margin-bottom: 15px;
-}
+        .nav ul {
+            list-style: none;
+        }
 
-.nav ul li a {
-    text-decoration: none; 
-    color: #343a40; 
-}
+        .nav ul li {
+            margin-bottom: 15px;
+        }
 
-.nav ul li a:hover {
-    color: #007bff; 
-}
+        .nav ul li a {
+            text-decoration: none;
+            color: #343a40;
+        }
 
-.logo {
-    width: 100%; 
-    max-width: 180px; 
-    margin-bottom: 20px; 
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto; 
-    border-radius: 100px;
-}
+        .nav ul li a:hover {
+            color: #007bff;
+        }
 
-.main-content {
-    flex: 1;
-    padding: 20px;
-    background-color: #fff; 
-}
+        .logo {
+            width: 100%;
+            max-width: 180px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 100px;
+        }
 
-/* Header styles */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
 
-/* Dashboard card styles */
-.dashboard-card {
-    background-color: #8cf1f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    min-width: 200px;
-    flex: 1 0 200px; 
-    max-width: 250px; 
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Styles for the "Select Section" dropdown */
-select#sectionDropdown {
-    width: 300px; 
-    padding: 10px; 
-    border: 1px solid #ced4da; 
-    border-radius: 5px; 
-    background-color: #fff; 
-    color: #333; 
-    font-size: 16px; 
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer; 
-}
+        #sectionForm {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: Arial, sans-serif;
+            margin: 20px 0;
+        }
 
-select#sectionDropdown:hover {
-    border-color: #007bff;
-}
+        #sectionForm label {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #333;
+        }
 
-select#sectionDropdown:focus {
-    outline: none; 
-    border-color: #007bff; 
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
+        #sectionForm select {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            color: #333;
+            appearance: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
 
-select#sectionDropdown option {
-    padding: 10px; 
-}
+        #sectionForm select:hover {
+            border-color: #007bff;
+        }
 
-table {
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 20px;
-}
+        #sectionForm select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
-th, td {
-    border: 1px solid #ced4da; 
-    padding: 10px; 
-    text-align: left;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-th {
-    background-color: #00d4ff;
-}
+        th, td {
+            border: 1px solid #ced4da;
+            padding: 10px;
+            text-align: left;
+        }
 
-/* Pagination button styles */
-.pagination-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.pagination-btn:hover {
-    background-color: #0056b3;
-}
+        th {
+            background-color: #00d4ff;
+        }
     </style>
 </head>
 
 <body>
 <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
-    <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
-    <nav class="nav">
-        <ul>
-            <li><a href="teacherint.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a href="vclasslist.php"><i class="fas fa-list-alt"></i> View Class List</a></li>
-            <li><a href="attendance.php"><i class="fas fa-user-check"></i> Take Attendance</a></li>
-            <li><a href="view_class_attendance.php"><i class="fas fa-eye"></i> View Class Attendance</a></li>
-            <li><a href="view_student_attendance.php"><i class="fas fa-user-graduate"></i> View Student Attendance</a></li>
-            <li><a href="today_attendance.php"><i class="fas fa-calendar-day"></i> Today's Attendance Report</a></li>
-            <li><a href="absent_notification.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>
-        </ul>
-    </nav>
-</aside>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <img src="image/classtrack.png" alt="Logo" class="logo">
+        <h4 class="text-primary">CLASS TRACK</h4>
+        <nav class="nav">
+            <ul>
+                <li><a href="teacherint.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="vclasslist.php"><i class="fas fa-list-alt"></i> View Class List</a></li>
+                <li><a href="attendance.php"><i class="fas fa-user-check"></i> Take Attendance</a></li>
+                <li><a href="view_class_attendance.php"><i class="fas fa-eye"></i> View Class Attendance</a></li>
+                <li><a href="view_student_attendance.php"><i class="fas fa-user-graduate"></i> View Student Attendance</a></li>
+                <li><a href="today_attendance.php"><i class="fas fa-calendar-day"></i> Today's Attendance Report</a></li>
+                <li><a href="absent_notification.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="header">
-                <h1>View Class List</h1>
-                <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
-                    <div class="profile-bar">
-                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
-                        <div class="profile-info">
-                            <h5 class="profile-name">Name</h5>
-                            <p class="profile-role">Teacher</p>
-                        </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>View Class List</h1>
+            <div class="header-content">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." class="search-input">
+                    <button class="search-button"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="profile-bar">
+                    <img src="image/profile.png" alt="Profile Picture" class="profile-picture">
+                    <div class="profile-info">
+                        <h5 class="profile-name">Name</h5>
+                        <p class="profile-role">Teacher</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <form method="POST" id="sectionForm">
+        <form method="POST" id="sectionForm">
             <label for="yearLevelDropdown">Select Year Level:</label>
             <select name="year_level" id="yearLevelDropdown" required>
                 <option value="">Select Year Level</option>
                 <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
-                    <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
+                    <option value="<?= htmlspecialchars($row['year_level']) ?>"><?= htmlspecialchars($row['year_level']) ?></option>
                 <?php endwhile; ?>
             </select>
 
@@ -285,59 +272,73 @@ th {
             <select name="section" id="sectionDropdown" required>
                 <option value="">Select Section</option>
                 <?php while ($row = $sections_result->fetch_assoc()) : ?>
-                    <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
+                    <option value="<?= htmlspecialchars($row['id']) ?>"><?= htmlspecialchars($row['section_name']) ?></option>
                 <?php endwhile; ?>
             </select>
         </form>
 
-        <div id="classList">
-            <!-- Empty table structure -->
-            <table id="classListTable">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Year Level</th>
-                        <th>Section</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" style="text-align: center;">Please select a year level and section.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <table id="classListTable" class="display">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Year Level</th>
+                    <th>Section</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" style="text-align: center;">Please select a year level and section.</td>
+                </tr>
+            </tbody>
+        </table>
     </main>
 </div>
 
 <script>
     $(document).ready(function() {
+        // Initialize DataTable
+        const classListTable = $('#classListTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+
         // Load the class list when either dropdown is changed
         $('#sectionDropdown, #yearLevelDropdown').change(function() {
             var sectionId = $('#sectionDropdown').val();
             var yearLevel = $('#yearLevelDropdown').val();
             if (sectionId && yearLevel) {
-                loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
+                loadClassList(sectionId, yearLevel); // Load the class list
             } else {
                 // If no selection, reset the table to default message
-                $('#classListTable tbody').html('<tr><td colspan="4" style="text-align: center;">Please select a year level and section.</td></tr>');
+                classListTable.clear().draw();
+                classListTable.row.add(['Please select a year level and section.', '', '', '']).draw();
             }
         });
 
-        // Function to load class list with pagination
-        function loadClassList(sectionId, yearLevel, page) {
+        // Function to load class list
+        function loadClassList(sectionId, yearLevel) {
             $.ajax({
-                url: 'fetch.php',
+                url: 'fetch.php', // Ensure this file handles fetching the data correctly
                 type: 'POST',
-                data: {section_id: sectionId, year_level: yearLevel, page: page},
+                data: { section_id: sectionId, year_level: yearLevel },
+                dataType: 'json',
                 success: function(response) {
-                    $('#classList').html(response); // Replace the table with the new class list data
-                    // Add event listener for pagination buttons
-                    $('.pagination-btn').on('click', function() {
-                        var selectedPage = $(this).data('page');
-                        loadClassList(sectionId, yearLevel, selectedPage);
+                    // Clear the table before adding new data
+                    classListTable.clear();
+                    // Append the new data
+                    response.forEach(row => {
+                        classListTable.row.add(row).draw();
                     });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching class list:", error);
+                    alert("Failed to load class list.");
                 }
             });
         }

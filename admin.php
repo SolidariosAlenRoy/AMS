@@ -265,7 +265,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
                         <button class="search-button"><i class="fas fa-search"></i></button>
                     </div>
                     <div class="profile-bar">
-                        <img src="profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
+                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
                             <h5 class="profile-name">Name</h5>
                             <p class="profile-role">Admin</p>
@@ -291,7 +291,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
                 <!-- Schedule Card -->
                 <div class="dashboard-card">
-                    <div class="dashboard-icon text-success"><i class="fa-light fa-calendar-days" style="color: #050505;"></i></div>
+                    <div class="dashboard-icon text-success"><i class="fas fa-calendar-alt"></i></div>
                     <div class="dashboard-title">Schedule</div>
                 </div>
             </div>

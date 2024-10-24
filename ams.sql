@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2024 at 10:45 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Oct 24, 2024 at 06:29 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `sections` (
   `id` int(11) NOT NULL,
   `section_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sections`
@@ -52,16 +52,16 @@ CREATE TABLE `students` (
   `parent_email` varchar(100) DEFAULT NULL,
   `contact_number` varchar(15) DEFAULT NULL,
   `section_id` int(11) DEFAULT NULL,
-  `year_level` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `year_level` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
 --
 
 INSERT INTO `students` (`id`, `name`, `parent_email`, `contact_number`, `section_id`, `year_level`) VALUES
-(18, 'Alen Roy Solidarios', 'roy@gmail.com', '12345', 1, 'Grade 7'),
-(19, 'jumila magtahas', 'jum@gmail.com', '1234567', 2, 'Grade 7');
+(2, 'Alen', 'roy@gmail.com', '123456789', 1, ''),
+(4, 'jumila', 'jum@gmail.com', '12345', 2, '');
 
 -- --------------------------------------------------------
 
@@ -72,23 +72,7 @@ INSERT INTO `students` (`id`, `name`, `parent_email`, `contact_number`, `section
 CREATE TABLE `student_subjects` (
   `student_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `student_subjects`
---
-
-INSERT INTO `student_subjects` (`student_id`, `subject_id`) VALUES
-(18, 6),
-(18, 7),
-(18, 8),
-(18, 9),
-(18, 10),
-(19, 6),
-(19, 7),
-(19, 8),
-(19, 9),
-(19, 10);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -99,7 +83,7 @@ INSERT INTO `student_subjects` (`student_id`, `subject_id`) VALUES
 CREATE TABLE `subjects` (
   `id` int(11) NOT NULL,
   `subject_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `subjects`
@@ -123,7 +107,7 @@ CREATE TABLE `teachers` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `contact_number` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `teachers`
@@ -143,7 +127,7 @@ CREATE TABLE `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','teacher') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -209,7 +193,7 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `subjects`

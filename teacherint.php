@@ -22,7 +22,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
@@ -321,10 +320,29 @@ body, h2, h4, p, ul {
             </div>
         </main>
     </div>
-
-    <!-- FullCalendar JS -->
+ 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth', // You can customize the view
+        events: [
+            // Example events, replace these with your own
+            {
+                title: 'Event 1',
+                start: '2024-10-15'
+            },
+            {
+                title: 'Event 2',
+                start: '2024-10-18'
+            }
+        ]
+    });
+    calendar.render();
+});
+    </script>
     
-    <!-- Calendar JavaScript -->
-    <script src="js/dashboard.js"></script> 
+
+    
 </body>
 </html>
