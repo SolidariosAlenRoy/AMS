@@ -24,19 +24,6 @@ if (!$sections_result || !$year_levels_result) {
     <title>View Class List</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 
     <style>
         body, h2, h4, p, ul {
@@ -277,7 +264,7 @@ if (!$sections_result || !$year_levels_result) {
             </select>
         </form>
 
-        <table id="classListTable" class="display">
+        <table id="classListTable">
             <thead>
                 <tr>
                     <th>Student Name</th>
@@ -297,17 +284,6 @@ if (!$sections_result || !$year_levels_result) {
 
 <script>
     $(document).ready(function() {
-        // Initialize DataTable
-        const classListTable = $('#classListTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-
         // Load the class list when either dropdown is changed
         $('#sectionDropdown, #yearLevelDropdown').change(function() {
             var sectionId = $('#sectionDropdown').val();
@@ -316,8 +292,7 @@ if (!$sections_result || !$year_levels_result) {
                 loadClassList(sectionId, yearLevel); // Load the class list
             } else {
                 // If no selection, reset the table to default message
-                classListTable.clear().draw();
-                classListTable.row.add(['Please select a year level and section.', '', '', '']).draw();
+                $('#classListTable tbody').html('<tr><td colspan="4" style="text-align: center;">Please select a year level and section.</td></tr>');
             }
         });
 
@@ -330,10 +305,12 @@ if (!$sections_result || !$year_levels_result) {
                 dataType: 'json',
                 success: function(response) {
                     // Clear the table before adding new data
-                    classListTable.clear();
+                    var tableBody = $('#classListTable tbody');
+                    tableBody.empty();
                     // Append the new data
                     response.forEach(row => {
-                        classListTable.row.add(row).draw();
+                        var newRow = '<tr><td>' + row[0] + '</td><td>' + row[1] + '</td><td>' + row[2] + '</td><td>' + row[3] + '</td></tr>';
+                        tableBody.append(newRow);
                     });
                 },
                 error: function(xhr, status, error) {
@@ -346,3 +323,4 @@ if (!$sections_result || !$year_levels_result) {
 </script>
 </body>
 </html>
+    
