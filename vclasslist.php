@@ -179,32 +179,33 @@ body, h2, h4, p, ul {
     color: #6c757d;
 }
 
-/* Section Dropdown */
-select#sectionDropdown {
-    width: 300px; 
-    padding: 10px; 
-    border: 1px solid #ced4da; 
-    border-radius: 5px; 
-    background-color: #fff; 
-    color: #333; 
-    font-size: 16px; 
-    appearance: none; 
-    cursor: pointer; 
+/* Dropdown Common Styles */
+select {
+    width: 150px; /* Same width for both dropdowns */
+    padding: 5px; /* Consistent padding */
+    border: 1px solid #ced4da; /* Border style */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    color: #333; /* Text color */
+    font-size: 16px; /* Consistent font size */
+    appearance: none; /* Remove default dropdown arrow */
+    cursor: pointer; /* Pointer cursor on hover */
 }
 
-select#sectionDropdown:hover {
-    border-color: #007bff;
+select:hover {
+    border-color: #007bff; /* Hover effect for border */
 }
 
-select#sectionDropdown:focus {
-    outline: none; 
-    border-color: #007bff; 
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+select:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: #007bff; /* Change border color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus shadow */
 }
 
-select#sectionDropdown option {
-    padding: 10px; 
+select option {
+    padding: 10px; /* Padding inside options */
 }
+
 
 /* Table Styling */
 table {
@@ -289,12 +290,13 @@ th {
                         <th>Student Name</th>
                         <th>Year Level</th>
                         <th>Section</th>
-                        <th>Action</th>
+                        <th>Parent's Email</th>
+                        <th>Contact Number</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="4" style="text-align: center;">Please select a year level and section.</td>
+                        <td colspan="5" style="text-align: center;">Please select a year level and section.</td>
                     </tr>
                 </tbody>
             </table>
@@ -312,7 +314,7 @@ th {
                 loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
             } else {
                 // If no selection, reset the table to default message
-                $('#classListTable tbody').html('<tr><td colspan="4" style="text-align: center;">Please select a year level and section.</td></tr>');
+                $('#classListTable tbody').html('<tr><td colspan="5" style="text-align: center;">Please select a year level and section.</td></tr>');
             }
         });
 

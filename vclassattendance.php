@@ -241,28 +241,45 @@ body, h2, h4, p, ul {
     color: #6c757d;
 }
 
-/* Tabs */
+/* Tabs Styling */
 .tab {
     display: inline-block;
+    padding: 12px 20px;
     margin-right: 10px;
-    padding: 10px;
+    background-color: #00d4ff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    background: #ccc;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab:hover {
+    background-color: #0056b3;
 }
 
 .tab.active {
-    background: #007bff;
-    color: white;
+    background-color: #ffffff;
+    color: #007bff;
+    border: 1px solid #ddd;
+    border-bottom: none;
 }
 
 .tab-content {
     display: none;
-    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    border-radius: 0 5px 5px 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -1px; /* Connect content with active tab */
 }
 
 .tab-content.active {
     display: block;
 }
+
 
 /* Table */
 table {
@@ -278,7 +295,7 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: #00d4ff;
     color: white;
 }
 

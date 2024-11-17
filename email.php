@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_email'])) {
 
     // Query to get absent students
     $absent_query = "
-        SELECT s.name, s.parent_email 
-        FROM students s 
-        JOIN sections sec ON s.section_id = sec.id 
+        SELECT s.name, s.parent_email, s.contact_number
+        FROM students s
+        JOIN sections sec ON s.section_id = sec.id
         WHERE sec.id = ? AND s.year_level = ? AND s.id IN (
-            SELECT student_id FROM attendance 
-            WHERE status = 'Absent'
+        SELECT student_id FROM attendance
+        WHERE status = 'Absent'
         )";
 
     $stmt_absent = $conn->prepare($absent_query);
@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_email'])) {
     while ($row = $result_absent->fetch_assoc()) {
         $absent_students[] = $row;
     }
+    
 }
 ?>
 
@@ -40,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_email'])) {
     <title>Teacher's Dashboard</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
 /* Global Styles */
@@ -197,21 +199,52 @@ body, h2, h4, p, ul {
     color: #6c757d;
 }
 
-/* Table Styles */
-.table-container {
-    margin-top: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-.table-container h2 {
-    font-size: 24px;
-    color: #343a40;
-    margin-bottom: 15px;
-} 
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
+table th {
+    background-color: #00d4ff;
+    color: white;
+    font-size: 16px;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td {
+    font-size: 14px;
+    color: #555;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
     </style>
 </head>
 <body>
@@ -273,11 +306,48 @@ body, h2, h4, p, ul {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <div class="form-group">
+            <button onclick="generateEmails()">Generate Email Drafts</button>
+        </div>
             </div>
         </main>
     </div>
 
+    <script>
+        function generateEmails() {
+            const rows = document.querySelectorAll('#absentStudentsTable tbody tr');
+            const emailAddresses = [];
+            let emailBody = "Dear Parents,\n\nWe would like to inform you that the following students were absent today:\n\n";
+            
+            if (rows.length === 0) {
+                alert("No absent students to notify.");
+                return;
+            }
 
+            rows.forEach(row => {
+                const studentName = row.cells[0].textContent.trim();
+                const guardianEmail = row.cells[1].textContent.trim();
+
+                if (guardianEmail && !emailAddresses.includes(guardianEmail)) {
+                    emailAddresses.push(guardianEmail);
+                }
+                
+                emailBody += `- ${studentName}\n`;
+            });
+
+            emailBody += "\nBest regards,\nYour School";
+            const subject = "Attendance Notification";
+            
+            if (emailAddresses.length > 0) {
+                const mailtoLink = `mailto:${emailAddresses.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+                
+                // Open mailto link in a new tab
+                window.open(mailtoLink, '_blank');
+            } else {
+                alert("No valid parents emails found.");
+            }
+        }
+    </script>
     
 </body>
 </html>
