@@ -130,8 +130,8 @@ body, h2, h4, p, ul {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 20px;
     font-size: 16px;
 }
 
@@ -180,30 +180,58 @@ body, h2, h4, p, ul {
 }
 
 /* Dropdown Common Styles */
+
 select {
-    width: 150px; /* Same width for both dropdowns */
-    padding: 5px; /* Consistent padding */
-    border: 1px solid #ced4da; /* Border style */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #fff; /* White background */
-    color: #333; /* Text color */
-    font-size: 16px; /* Consistent font size */
-    appearance: none; /* Remove default dropdown arrow */
-    cursor: pointer; /* Pointer cursor on hover */
+    width: 460px; 
+    padding: 10px; 
+    border: 1px solid #ced4da;
+    border-radius: 5px; 
+    background-color: #fff; 
+    color: #333; 
+    font-size: 16px; 
+    appearance: none; 
+    cursor: pointer;
 }
 
 select:hover {
-    border-color: #007bff; /* Hover effect for border */
+    border-color: #007bff; 
 }
 
 select:focus {
-    outline: none; /* Remove outline on focus */
-    border-color: #007bff; /* Change border color */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus shadow */
+    outline: none; 
+    border-color: #007bff; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 select option {
-    padding: 10px; /* Padding inside options */
+    padding: 10px; 
+}
+
+/* Styling for the dropdown container */
+.dropdown-container {
+    border: 2px solid #007bff;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
+    transition: box-shadow 0.3s ease-in-out; 
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+}
+
+.dropdown-container:hover {
+    box-shadow: 0 0 25px rgba(0, 123, 255, 0.9); 
+}
+
+/* Styling for the dropdown row */
+.dropdown-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Label styling */
+.label {
+    font-weight: bold;
 }
 
 
@@ -265,22 +293,31 @@ th {
             </div>
 
             <form method="POST" id="sectionForm">
-            <label for="yearLevelDropdown">Select Year Level:</label>
-            <select name="year_level" id="yearLevelDropdown" required>
-                <option value="">Select Year Level</option>
-                <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
-                    <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
-                <?php endwhile; ?>
-            </select>
+    <div class="dropdown-container">
+        <div class="dropdown-row">
+            <div>
+                <label for="yearLevelDropdown" class="label">Select Year Level:</label>
+                <select name="year_level" id="yearLevelDropdown" required>
+                    <option value="">--select--</option>
+                    <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
+                        <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <div>
+                <label for="sectionDropdown" class="label">Select Section:</label>
+                <select name="section" id="sectionDropdown" required>
+                    <option value="">--select--</option>
+                    <?php while ($row = $sections_result->fetch_assoc()) : ?>
+                        <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
 
-            <label for="section">Select Section:</label>
-            <select name="section" id="sectionDropdown" required>
-                <option value="">Select Section</option>
-                <?php while ($row = $sections_result->fetch_assoc()) : ?>
-                    <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
-                <?php endwhile; ?>
-            </select>
-        </form>
+
 
         <div id="classList">
             <!-- Empty table structure -->

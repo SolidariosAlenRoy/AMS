@@ -146,8 +146,8 @@ body, h2, h4, p, ul {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 20px;
     font-size: 16px;
 }
 
@@ -211,25 +211,31 @@ label {
 }
 
 /* Form */
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
-    height: auto;
+.form-container-wrapper {
+    border: 2px solid #007bff;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); /* Glowing border effect */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
+
 }
 
-form {
-    flex: 1;
-    padding: 10px;
-    width: 80%;
-    max-width: 500px;
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.form-container-wrapper:hover {
+    box-shadow: 0 0 25px rgba(0, 123, 255, 0.9); /* Intensify the glow on hover */
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: center;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Dropdown */
@@ -254,8 +260,8 @@ select:focus {
 .buttons-container {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 5px;
+    margin-top: 10px;
 }
 
 button {
@@ -271,6 +277,13 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.form-item button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
 }
 
 /* Table */
@@ -316,8 +329,6 @@ tr:hover {
         margin-top: 10px;
     }
 }
-
-
         </style>
     </head>
     <body>
@@ -357,8 +368,11 @@ tr:hover {
                 </div>
                 
                 <!-- HTML Form for Attendance -->
-        <div class="form-container">
-            <form method="POST" action="attendance.php">
+                <div class="form-container-wrapper">
+    <form method="POST" action="attendance.php" class="form-container">
+        <div class="form-grid">
+            <!-- Select Year Level -->
+            <div class="form-item">
                 <label for="year_level">Select Year Level:</label>
                 <select name="year_level" required>
                     <option value="">--select--</option>
@@ -370,7 +384,10 @@ tr:hover {
                     }
                     ?>
                 </select>
+            </div>
 
+            <!-- Select Section -->
+            <div class="form-item">
                 <label for="section">Select Section:</label>
                 <select name="section" required>
                     <option value="">--select--</option>
@@ -382,7 +399,10 @@ tr:hover {
                     }
                     ?>
                 </select>
+            </div>
 
+            <!-- Select Subject -->
+            <div class="form-item">
                 <label for="subject">Select Subject:</label>
                 <select name="subject" required>
                     <option value="">--select--</option>
@@ -394,69 +414,87 @@ tr:hover {
                     }
                     ?>
                 </select>
+            </div>
 
-                <button type="submit">Load Students</button>
-            </form>
+            <!-- Load Students Button -->
+            <div class="form-item">
+                <button type="submit" style="margin-top: 30px;">Load Students</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-            <form method="POST" action="save_attendance.php">
-    <input type="hidden" name="year_level" value="<?php echo $year_level; ?>">
-    <input type="hidden" name="section" value="<?php echo $section_id; ?>">
-    <input type="hidden" name="subject" value="<?php echo $subject_id; ?>">
-    <!-- Student Table and Attendance Dropdown -->
-    <table>
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Year Level</th>
-                <th>Section</th>
-                <th>Subject</th>
-                <th>Attendance</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if (isset($section_id, $subject_id, $year_level)) {
-                $students_query = "
-                    SELECT s.id, s.name, s.year_level, sec.section_name 
-                    FROM students s 
-                    JOIN sections sec ON s.section_id = sec.id 
-                    WHERE sec.id = ? AND s.year_level = ?";
-                $stmt_students = $conn->prepare($students_query);
-                $stmt_students->bind_param('is', $section_id, $year_level);
-                $stmt_students->execute();
-                $students = $stmt_students->get_result();
 
-                if ($students->num_rows > 0) {
-                    while ($row = $students->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>{$row['name']}</td>";
-                        echo "<td>{$row['year_level']}</td>";
-                        echo "<td>{$row['section_name']}</td>";
-                        echo "<td>$subject_name</td>";
-                        echo "<td>
-                                <select name='attendance[{$row['id']}]' required>
-                                    <option value=''>Select Attendance</option>
-                                    <option value='Present'>Present</option>
-                                    <option value='Absent'>Absent</option>
-                                    <option value='Late'>Late</option>
-                                </select>
-                              </td>";
-                        echo "</tr>";
+
+
+
+<div class="form-container-wrapper">
+    <form method="POST" action="save_attendance.php">
+        <input type="hidden" name="year_level" value="<?php echo $year_level; ?>">
+        <input type="hidden" name="section" value="<?php echo $section_id; ?>">
+        <input type="hidden" name="subject" value="<?php echo $subject_id; ?>">
+
+        <!-- Table Container -->
+        <div class="table-container-wrapper">
+            <!-- Student Table and Attendance Dropdown -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Year Level</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (isset($section_id, $subject_id, $year_level)) {
+                        $students_query = "
+                            SELECT s.id, s.name, s.year_level, sec.section_name 
+                            FROM students s 
+                            JOIN sections sec ON s.section_id = sec.id 
+                            WHERE sec.id = ? AND s.year_level = ?";
+                        $stmt_students = $conn->prepare($students_query);
+                        $stmt_students->bind_param('is', $section_id, $year_level);
+                        $stmt_students->execute();
+                        $students = $stmt_students->get_result();
+
+                        if ($students->num_rows > 0) {
+                            while ($row = $students->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>{$row['name']}</td>";
+                                echo "<td>{$row['year_level']}</td>";
+                                echo "<td>{$row['section_name']}</td>";
+                                echo "<td>$subject_name</td>";
+                                echo "<td>
+                                        <select name='attendance[{$row['id']}]' required>
+                                            <option value=''>Select Attendance</option>
+                                            <option value='Present'>Present</option>
+                                            <option value='Absent'>Absent</option>
+                                            <option value='Late'>Late</option>
+                                        </select>
+                                      </td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>No students found in the selected section and year level.</td></tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>Please select a section, year level, and subject to load students.</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='5'>No students found in the selected section and year level.</td></tr>";
-                }
-            } else {
-                echo "<tr><td colspan='5'>Please select a section, year level, and subject to load students.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-    <div class="buttons-container">
-        <button type="submit" name="save_attendance">Save Attendance</button>
-        <button type="submit" name="send_email" formaction="email.php">Send Email</button> <!-- New Send Email button -->
-    </div>
-</form>
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="buttons-container">
+            <button type="submit" name="save_attendance">Save Attendance</button>
+            <button type="submit" name="send_email" formaction="email.php">Send Email</button>
+        </div>
+    </form>
+</div>
+
 
 
 

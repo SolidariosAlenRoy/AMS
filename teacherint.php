@@ -124,8 +124,8 @@ body, h2, h4, p, ul {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 20px;
     font-size: 16px;
 }
 
@@ -230,7 +230,8 @@ body, h2, h4, p, ul {
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
+    transition: box-shadow 0.3s ease-in-out; 
 }
 
 .announcements h3 {
@@ -247,7 +248,8 @@ body, h2, h4, p, ul {
     padding: 20px; 
     background-color: #f8f9fa; 
     border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
+    transition: box-shadow 0.3s ease-in-out; 
 }
 
 .calendar h3 {

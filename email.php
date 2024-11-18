@@ -150,8 +150,8 @@ body, h2, h4, p, ul {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 20px;
     font-size: 16px;
 }
 
