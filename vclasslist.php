@@ -28,229 +28,243 @@ $year_levels_result = $conn->query($year_levels_query);
    <style>
 /* General Reset */
 body, h2, h4, p, ul {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Layout Containers */
 .container {
-    display: flex;
-    height: 100vh; 
+  display: flex;
+  height: 100vh; 
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px; 
-    background-color: #343a40;
-    color: #fff;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 250px; 
+  background-color: #343a40;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sidebar h4 {
-    font-size: 24px;
-    color: #ffc107; 
-    margin-bottom: 20px;
-    text-align: center;
+  font-size: 24px;
+  color: #ffc107; 
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .nav ul {
-    list-style: none; 
-    width: 100%;
-    text-align: left;
-    padding: 0;
+  list-style: none; 
+  width: 100%;
+  text-align: left;
+  padding: 0;
 }
 
 .nav ul li {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .nav ul li a {
-    text-decoration: none; 
-    color: #adb5bd; 
-    font-size: 16px;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+  text-decoration: none; 
+  color: #adb5bd; 
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
 .nav ul li a:hover {
-    background-color: #495057;
-    color: #fff; 
+  background-color: #495057;
+  color: #fff; 
 }
 
 .logo {
-    width: 100%; 
-    max-width: 180px; 
-    margin-bottom: 20px; 
-    display: block; 
-    border-radius: 100px;
+  width: 100%; 
+  max-width: 180px; 
+  margin-bottom: 20px; 
+  display: block; 
+  border-radius: 100px;
 }
 
 /* Main Content */
 .main-content {
-    flex: 1;
-    padding: 20px;
+  flex: 1;
+  padding: 20px;
 }
 
 /* Header */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #dee2e6;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #dee2e6;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  gap: 20px;
 }
 
 .header h1 {
-    color: #007bff;
-    font-size: 28px;
-    margin: 0;
+  color: #36454F;
+  font-size: 28px;
+  margin: 0;
 }
 
 .header-content {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 /* Search Bar */
 .search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-input {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  width: 300px;
+  height: 20px;
+  font-size: 16px;
 }
 
 .search-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #899499;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Profile Bar */
 .profile-bar {
-    display: flex; 
-    align-items: center; 
-    gap: 10px;
-    border-left: 1px solid #ced4da; 
-    padding-left: 20px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  border-left: 1px solid #ced4da; 
+  padding-left: 20px; 
 }
 
 .profile-picture {
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%; 
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%; 
 }
 
 .profile-info {
-    text-align: left; 
+  text-align: left; 
 }
 
 .profile-name {
-    font-size: 16px; 
-    margin: 0; 
-    color: #333;
+  font-size: 16px; 
+  margin: 0; 
+  color: #333;
 }
 
 .profile-role {
-    font-size: 12px;
-    color: #6c757d;
+  font-size: 12px;
+  color: #6c757d;
 }
 
 /* Dropdown Common Styles */
 
 select {
-    width: 460px; 
-    padding: 10px; 
-    border: 1px solid #ced4da;
-    border-radius: 5px; 
-    background-color: #fff; 
-    color: #333; 
-    font-size: 16px; 
-    appearance: none; 
-    cursor: pointer;
+  width: 460px; 
+  padding: 10px; 
+  border: 1px solid #ced4da;
+  border-radius: 5px; 
+  background-color: #fff; 
+  color: #333; 
+  font-size: 16px; 
+  appearance: none; 
+  cursor: pointer;
 }
 
 select:hover {
-    border-color: #007bff; 
+  border-color: #6c757d; 
 }
 
 select:focus {
-    outline: none; 
-    border-color: #007bff; 
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none; 
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 select option {
-    padding: 10px; 
+  padding: 10px; 
 }
 
 /* Styling for the dropdown container */
 .dropdown-container {
-    border: 2px solid #007bff;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
-    transition: box-shadow 0.3s ease-in-out; 
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-    margin-bottom: 20px;
+  border: 2px solid #6c757d;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  margin-bottom: 20px;
 }
 
-.dropdown-container:hover {
-    box-shadow: 0 0 25px rgba(0, 123, 255, 0.9); 
-}
+
 
 /* Styling for the dropdown row */
 .dropdown-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 /* Label styling */
 .label {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 
 /* Table Styling */
 table {
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 20px;
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 20px;
 }
 
 th, td {
-    border: 1px solid #ced4da; 
-    padding: 10px; 
-    text-align: left;
+  border: 1px solid #ced4da; 
+  padding: 10px; 
+  text-align: left;
 }
 
 th {
-    background-color: #00d4ff;
+  background-color: #708090;
+  color: #fff;
 }
+
+.card {
+  background-color: #fff;
+  border: 2px solid #6c757d;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #007bff;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
 
 
     </style>
@@ -318,7 +332,7 @@ th {
 </form>
 
 
-
+      <div class="card">                 
         <div id="classList">
             <!-- Empty table structure -->
             <table id="classListTable">
@@ -338,6 +352,7 @@ th {
                 </tbody>
             </table>
         </div>
+    </div>
     </main>
 </div>
 

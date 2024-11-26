@@ -101,7 +101,7 @@ body, h2, h4, p, ul {
 }
 
 .header h1 {
-    color: #007bff;
+    color: #36454F;
     font-size: 28px;
     margin: 0; /* Remove default margin */
 }
@@ -130,7 +130,7 @@ body, h2, h4, p, ul {
 }
 
 .search-button {
-    background-color: #007bff;
+    background-color: #899499;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -185,7 +185,7 @@ body, h2, h4, p, ul {
 
 /* Dashboard Card */
 .dashboard-card {
-    background-color: #8cf1f5;
+    background-color: #7393B3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 20px;
@@ -203,7 +203,7 @@ body, h2, h4, p, ul {
 .dashboard-title {
     font-size: 16px;
     text-transform: uppercase;
-    color: #6c757d;
+    color: #36454F;
     margin-bottom: 5px;
 }
 
@@ -229,9 +229,8 @@ body, h2, h4, p, ul {
     margin-right: 20px; 
     padding: 20px;
     background-color: #f8f9fa;
-    border-radius: 10px; 
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
-    transition: box-shadow 0.3s ease-in-out; 
+    border-radius: 10px;
+    border: 2px solid #6c757d;
 }
 
 .announcements h3 {
@@ -248,8 +247,7 @@ body, h2, h4, p, ul {
     padding: 20px; 
     background-color: #f8f9fa; 
     border-radius: 10px; 
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); 
-    transition: box-shadow 0.3s ease-in-out; 
+    border: 2px solid #6c757d;
 }
 
 .calendar h3 {
@@ -270,8 +268,7 @@ body, h2, h4, p, ul {
             <li><a href="vclasslist.php"><i class="fas fa-list-alt"></i> View Class List</a></li>
             <li><a href="attendance.php"><i class="fas fa-user-check"></i> Take Attendance</a></li>
             <li><a href="vclassattendance.php"><i class="fas fa-eye"></i> View Class Attendance</a></li>
-            <li><a href="email.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>
-            <li><a href="login.php"><i class="fas fa-"></i>Logout</a></li>
+            <li><a href="email.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>   
         </ul>
     </nav>
 </aside>
@@ -324,11 +321,7 @@ body, h2, h4, p, ul {
                 <!-- Recent Announcements -->
                 <div class="announcements">
                     <h3>Recent Announcements</h3>
-                    <ul>
-                        <li>New class schedules are out!</li>
-                        <li>Parent-teacher meetings next week.</li>
-                        <li>School trip planned for next month.</li>
-                    </ul>
+                    
                 </div>
                 
                 <!-- FullCalendar -->

@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_email'])) {
     <title>Teacher's Dashboard</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <!-- FullCalendar CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
 /* Global Styles */
@@ -127,7 +129,7 @@ body, h2, h4, p, ul {
 }
 
 .header h1 {
-    color: #007bff;
+    color: #36454F;
     font-size: 28px;
     margin: 0; /* Remove default margin */
 }
@@ -156,7 +158,7 @@ body, h2, h4, p, ul {
 }
 
 .search-button {
-    background-color: #007bff;
+    background-color: #899499;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -201,50 +203,63 @@ body, h2, h4, p, ul {
 
 /* Table */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
 }
 
 table th, table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 table th {
-    background-color: #00d4ff;
-    color: white;
-    font-size: 16px;
-}
-
-table tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
-}
-
-table tbody tr:hover {
-    background-color: #f1f1f1;
+  background-color: #708090;
+  color: white;
+  font-size: 16px;
 }
 
 table td {
-    font-size: 14px;
-    color: #555;
+  font-size: 14px;
+  color: #555;
 }
 
 button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
+  background-color: #708090;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #899499;
 }
+
+
+
+.card {
+  background-color: #fff;
+  border: 2px solid #6c757d;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #007bff;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -260,6 +275,7 @@ button:hover {
             <li><a href="attendance.php"><i class="fas fa-user-check"></i> Take Attendance</a></li>
             <li><a href="vclassattendance.php"><i class="fas fa-eye"></i> View Class Attendance</a></li>
             <li><a href="email.php"><i class="fas fa-envelope"></i> Generate E-mail</a></li>
+            
         </ul>
     </nav>
 </aside>
@@ -267,27 +283,24 @@ button:hover {
 
         <!-- Main Content -->
         <main class="main-content">
-        <div class="header">
-    <h1>Teacher's Dashboard</h1>
-    <div class="header-content">
-        <div class="search-bar">
-            <input type="text" placeholder="Search..." class="search-input">
-            <button class="search-button"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="profile-bar">
-            <img src="image/profile.png" alt="Profile Picture" class="profile-picture">
-            <div class="profile-info">
-                <h5 class="profile-name">Name</h5>
-                <p class="profile-role">Teacher</p>
+            <div class="header">
+                <h1>Absent Students</h1>
+                <div class="header-content">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search..." class="search-input">
+                        <button class="search-button"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="profile-bar">
+                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
+                        <div class="profile-info">
+                            <h5 class="profile-name">Name</h5>
+                            <p class="profile-role">Teacher</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- Table to Display Absent Students -->
-<div class="table-container">
-                <h2>Absent Students</h2>
+<div class="card">
                 <table id="absentStudentsTable" class="display">
                     <thead>
                         <tr>
@@ -296,6 +309,7 @@ button:hover {
                             <th>Contact Number</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php foreach ($absent_students as $student): ?>
                             <tr>
@@ -305,10 +319,8 @@ button:hover {
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
+                    <button onclick="generateEmails()">Send Email</button>
                 </table>
-                <div class="form-group">
-            <button onclick="generateEmails()">Generate Email Drafts</button>
-        </div>
             </div>
         </main>
     </div>
@@ -317,7 +329,7 @@ button:hover {
         function generateEmails() {
             const rows = document.querySelectorAll('#absentStudentsTable tbody tr');
             const emailAddresses = [];
-            let emailBody = "Dear Parents,\n\nWe would like to inform you that the following students were absent today:\n\n";
+            let emailBody = "Dear Parents,\n\nWe would like to inform you the following students who were absent today:\n\n";
             
             if (rows.length === 0) {
                 alert("No absent students to notify.");
@@ -348,6 +360,9 @@ button:hover {
             }
         }
     </script>
+
+    
+
     
 </body>
 </html>

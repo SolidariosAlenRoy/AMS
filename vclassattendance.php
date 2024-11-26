@@ -170,7 +170,7 @@ body, h2, h4, p, ul {
 }
 
 .header h1 {
-    color: #007bff;
+    color: #36454F;
     font-size: 28px;
     margin: 0;
 }
@@ -204,7 +204,7 @@ body, h2, h4, p, ul {
     padding: 10px 15px;
     height: 40px;
     font-size: 16px;
-    background-color: #007bff;
+    background-color: #899499;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -246,22 +246,23 @@ body, h2, h4, p, ul {
     display: inline-block;
     padding: 12px 20px;
     margin-right: 10px;
-    background-color: #00d4ff;
+    background-color: #36454F;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px 5px 0 0;
     transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid #6c757d;
 }
 
 .tab:hover {
-    background-color: #0056b3;
+    background-color:  #899499;
 }
 
 .tab.active {
-    background-color: #ffffff;
-    color: #007bff;
+    background-color:  #899499;
+    color: #ffff;
     border: 1px solid #ddd;
     border-bottom: none;
 }
@@ -269,10 +270,9 @@ body, h2, h4, p, ul {
 .tab-content {
     display: none;
     padding: 20px;
-    border: 1px solid #ddd;
     background-color: #ffffff;
     border-radius: 0 5px 5px 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #6c757d;
     margin-top: -1px; /* Connect content with active tab */
 }
 
@@ -295,7 +295,7 @@ th, td {
 }
 
 th {
-    background-color: #00d4ff;
+    background-color: #708090;
     color: white;
 }
 

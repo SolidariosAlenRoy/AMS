@@ -4,21 +4,22 @@ require 'db.php'; // Connect to the database
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin's Dashboard</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
-    <!-- External CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
 /* Global Styles */
-body, h2, h4, p, ul {
+body, h2, h4, p {
     margin: 0;
     padding: 0;
 }
@@ -100,7 +101,7 @@ body, h2, h4, p, ul {
 }
 
 .header h1 {
-    color: #007bff;
+    color: #36454F;
     font-size: 28px;
     margin: 0; /* Remove default margin */
 }
@@ -123,13 +124,13 @@ body, h2, h4, p, ul {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 20px;
     font-size: 16px;
 }
 
 .search-button {
-    background-color: #007bff;
+    background-color: #899499;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -172,6 +173,7 @@ body, h2, h4, p, ul {
     color: #6c757d;
 }
 
+
 /* Card Container */
 .card-container {
     display: flex;
@@ -183,7 +185,7 @@ body, h2, h4, p, ul {
 
 /* Dashboard Card */
 .dashboard-card {
-    background-color: #8cf1f5;
+    background-color: #7393B3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 20px;
@@ -201,7 +203,7 @@ body, h2, h4, p, ul {
 .dashboard-title {
     font-size: 16px;
     text-transform: uppercase;
-    color: #6c757d;
+    color: #36454F;
     margin-bottom: 5px;
 }
 
@@ -227,8 +229,8 @@ body, h2, h4, p, ul {
     margin-right: 20px; 
     padding: 20px;
     background-color: #f8f9fa;
-    border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    border: 2px solid #6c757d;
 }
 
 .announcements h3 {
@@ -245,38 +247,37 @@ body, h2, h4, p, ul {
     padding: 20px; 
     background-color: #f8f9fa; 
     border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #6c757d;
 }
 
 .calendar h3 {
     text-align: center;
 }
+
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <!-- Logo -->
-            <img src="image/classtrack.png" alt="Logo" class="logo"> 
-            <h4 class="text-primary"><i class=""></i> CLASS TRACK</h4>
-            <nav class="nav">
-                <ul>
-                    <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-                    <li><a href="classlist.php"><i class="fas fa-list-alt"></i> Class List</a></li>
-                    <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-                    <li><a href="teacherlist.php"><i class="fas fa-list-alt"></i> Teachers List</a></li>
-                    <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-                    <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
+    <nav class="nav">
+        <ul>
+            <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+        </ul>
+    </nav>
+</aside>
+
 
         <!-- Main Content -->
         <main class="main-content">
             <div class="header">
-                <h1>Teacher's Dashboard</h1>
+                <h1>Admin's Dashboard</h1>
                 <div class="header-content">
                     <div class="search-bar">
                         <input type="text" placeholder="Search..." class="search-input">
@@ -286,7 +287,7 @@ body, h2, h4, p, ul {
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
                             <h5 class="profile-name">Name</h5>
-                            <p class="profile-role">Teacher</p>
+                            <p class="profile-role">Admin</p>
                         </div>
                     </div>
                 </div>
@@ -296,33 +297,31 @@ body, h2, h4, p, ul {
                 <!-- Students Card -->
                 <div class="dashboard-card">
                     <div class="dashboard-icon text-info"><i class="fas fa-users"></i></div>
-                    <div class="dashboard-title">Students</div>
+                    <div class="dashboard-title"><b>Students</b></div>
                     <div class="dashboard-value">8</div>
                 </div>
 
                 <!-- Classes Card -->
                 <div class="dashboard-card">
                     <div class="dashboard-icon text-primary"><i class="fas fa-chalkboard"></i></div>
-                    <div class="dashboard-title">Classes</div>
+                    <div class="dashboard-title"><b>Classes</b></div>
                     <div class="dashboard-value">3</div>
                 </div>
 
                 <!-- Schedule Card -->
                 <div class="dashboard-card">
-                    <div class="dashboard-icon text-success"><i class="fas fa-calendar-alt"></i></div>
-                    <div class="dashboard-title">Schedule</div>
+                    <div class="dashboard-icon text-success">
+                    <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="dashboard-title"><b>Schedule</b></div>
+                    <a href="view_schedule.php" class="btn btn-primary" style="display: block; margin-top: 10px; text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px; background-color: #007bff; text-align: center;">View Schedule</a>
                 </div>
-            </div>
 
             <div class="info-container">
                 <!-- Recent Announcements -->
                 <div class="announcements">
                     <h3>Recent Announcements</h3>
-                    <ul>
-                        <li>New class schedules are out!</li>
-                        <li>Parent-teacher meetings next week.</li>
-                        <li>School trip planned for next month.</li>
-                    </ul>
+                    
                 </div>
                 
                 <!-- FullCalendar -->
@@ -333,10 +332,29 @@ body, h2, h4, p, ul {
             </div>
         </main>
     </div>
+ 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth', // You can customize the view
+        events: [
+            // Example events, replace these with your own
+            {
+                title: 'Event 1',
+                start: '2024-10-15'
+            },
+            {
+                title: 'Event 2',
+                start: '2024-10-18'
+            }
+        ]
+    });
+    calendar.render();
+});
+    </script>
+    
 
-    <!-- FullCalendar JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <!-- Calendar JavaScript -->
-    <script src="js/dashboard.js"></script> 
+    
 </body>
 </html>

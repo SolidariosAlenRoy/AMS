@@ -1,5 +1,6 @@
 <?php
-require '../includes/config.php';
+session_start();
+require 'db.php'; // Include your database connection
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

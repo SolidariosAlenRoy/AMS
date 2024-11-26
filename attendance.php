@@ -124,7 +124,7 @@ body, h2, h4, p, ul {
 
 /* Header */
 .header h1 {
-    color: #007bff;
+    color: #36454F;
     font-size: 28px;
     margin: 0;
 }
@@ -152,7 +152,7 @@ body, h2, h4, p, ul {
 }
 
 .search-button {
-    background-color: #007bff;
+    background-color: #899499;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -212,18 +212,12 @@ label {
 
 /* Form */
 .form-container-wrapper {
-    border: 2px solid #007bff;
+    border: 2px solid #6c757d;
     padding: 20px;
     border-radius: 8px;
     background-color: #f8f9fa;
     margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6); /* Glowing border effect */
-    transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
-
-}
-
-.form-container-wrapper:hover {
-    box-shadow: 0 0 25px rgba(0, 123, 255, 0.9); /* Intensify the glow on hover */
+    
 }
 
 .form-grid {
@@ -252,8 +246,7 @@ select {
 
 select:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #6c757d;
 }
 
 /* Buttons */
@@ -265,7 +258,7 @@ select:focus {
 }
 
 button {
-    background-color: #007bff;
+    background-color: #708090;
     color: #fff;
     padding: 8px 12px;
     border: none;
@@ -276,7 +269,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #899499;
 }
 
 .form-item button {
@@ -301,8 +294,9 @@ th, td {
 }
 
 th {
-    background-color: #00d4ff;
+    background-color: #708090;
     font-weight: bold;
+    color: #fff;
 }
 
 td select {
@@ -418,7 +412,7 @@ tr:hover {
 
             <!-- Load Students Button -->
             <div class="form-item">
-                <button type="submit" style="margin-top: 30px;">Load Students</button>
+                <button type="submit" style="margin-top: 10px;">Load Students</button>
             </div>
         </div>
     </form>
