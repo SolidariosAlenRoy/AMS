@@ -42,7 +42,7 @@ body, h2, h4, p, ul {
 }
 
 .sidebar h4 {
-    font-size: 24px;
+    font-size: 26px;
     color: #ffc107; 
     margin-bottom: 20px;
     text-align: center;
@@ -76,7 +76,7 @@ body, h2, h4, p, ul {
 
 .logo {
     width: 100%; 
-    max-width: 180px; 
+    max-width: 200px; 
     margin-bottom: 20px; 
     display: block; 
     margin-left: auto; 
@@ -183,6 +183,16 @@ body, h2, h4, p, ul {
     margin-top: 20px; 
 }
 
+/* Schedule Card Specific Styles */
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
 /* Dashboard Card */
 .dashboard-card {
     background-color: #7393B3;
@@ -260,7 +270,7 @@ body, h2, h4, p, ul {
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <img src="image/logo.png" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
@@ -309,13 +319,15 @@ body, h2, h4, p, ul {
                 </div>
 
                 <!-- Schedule Card -->
-                <div class="dashboard-card">
+                <div class="dashboard-card schedule-card" onclick="window.location.href='view_schedule.php'" style="cursor: pointer;">
                     <div class="dashboard-icon text-success">
                     <i class="fas fa-calendar-alt"></i>
                     </div>
                     <div class="dashboard-title">Schedule</div>
-                    <a href="view_schedule.php" class="btn btn-primary" style="display: block; margin-top: 10px; text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px; background-color: #007bff; text-align: center;">View Schedule</a>
+                    <div class="dashboard-value"></div>
                 </div>
+
+
 
             <div class="info-container">
                 <!-- Recent Announcements -->

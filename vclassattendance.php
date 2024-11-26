@@ -113,7 +113,7 @@ body, h2, h4, p, ul {
 }
 
 .sidebar h4 {
-    font-size: 24px;
+    font-size: 26px;
     color: #ffc107;
     margin-bottom: 20px;
     text-align: center;
@@ -121,7 +121,7 @@ body, h2, h4, p, ul {
 
 .logo {
     width: 100%;
-    max-width: 180px;
+    max-width: 200px;
     margin: 0 auto 20px;
     border-radius: 100px;
 }
@@ -305,7 +305,7 @@ th {
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <img src="image/logo.png" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
@@ -413,7 +413,8 @@ th {
                 <h3>View Student Attendance</h3>
                 <form id="studentAttendanceForm" method="POST">
                     <label for="attendanceDate">Date:</label>
-                    <input type="date" id="attendanceDate" name="attendance_date" required>
+               
+     <input type="date" id="attendanceDate" name="attendance_date" required>
 
                     <label for="studentDropdown">Select Student:</label>
                     <select name="student" id="studentDropdown" required>
