@@ -8,194 +8,234 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
-    <style>
-body {
-    margin: 0; 
-    font-family: 'Times New Roman', Times, serif;
-}
+<style>
+    body, h2, h4, p, ul {
+        margin: 0;
+        padding: 0;
+    }
 
-.sidebar {
-    width: 200px; 
-    background-color: #e0e0e0;
-    padding: 20px;
-    position: fixed; /* Keep sidebar fixed */
-    height: 100vh; /* Full viewport height */
-    overflow-y: auto; /* Enable scrolling if needed */
-}
+    /* Container for Sidebar and Main Content */
+    .container {
+        display: flex;
+        height: 100vh; 
+    }
 
-.sidebar h4 {
-    color: black; 
-    margin-bottom: 20px;
-    text-align: center;
-}
+    /* Sidebar Styles */
+    .sidebar {
+        width: 250px; 
+        background-color: #343a40;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.main-content {
-    margin-left: 220px; /* Leave space for the fixed sidebar */
-    padding: 20px; /* Add padding for main content */
-}
+    .sidebar h4 {
+        font-size: 26px;
+        color: #ffc107; 
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
-.header-content {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    border-bottom: 1px solid #ced4da; 
-    padding-bottom: 10px; 
-    margin-bottom: 10px; 
-}
+    .nav ul {
+        list-style: none; 
+        width: 100%;
+        text-align: left;
+        padding: 0;
+    }
 
-.search-bar {
-    display: flex;
-    align-items: center; 
-}
+    .nav ul li {
+        margin-bottom: 20px;
+    }
 
-.search-input {
-    flex-grow: 1; 
-    padding: 10px; 
-    border: 1px solid #ced4da; 
-    border-radius: 5px; 
-    width: 1050px;
-    height: 20px;
-    margin-right: 10px;
-}
+    .nav ul li a {
+        text-decoration: none; 
+        color: #adb5bd; 
+        font-size: 16px;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.search-button {
-    background-color: #007bff; 
-    color: #fff; 
-    border: none;
-    padding: 10px 15px; 
-    border-radius: 5px; 
-    cursor: pointer;
-}
+    .nav ul li a:hover {
+        background-color: #495057;
+        color: #fff; 
+    }
 
-.search-button i {
-    margin: 0;
-}
+    .logo {
+        width: 100%; 
+        max-width: 210px; 
+        margin-bottom: 20px; 
+        display: block; 
+        margin-left: auto; 
+        margin-right: auto; 
+        border-radius: 110px;
+        border: 3px solid transparent;
+        box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+    }
 
-        /* Profile Bar */
-.profile-bar {
-    display: flex; 
-    align-items: center; 
-    margin-left: 20px; 
-    border-left: 1px solid #ced4da; 
-    padding-left: 20px; 
-}
+    /* Main Content Styles */
+    .main-content {
+        flex: 1;
+        padding: 20px;
+    }
 
-.profile-picture {
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%; 
-    margin-right: 10px; 
-}
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0; /* Add padding for spacing */
+        margin-top: 10px;
+        margin-bottom: 20px; /* Adjust margin for more space below header */
+        gap: 20px;
+    }
 
-.profile-info {
-    text-align: left; 
-}
+    .header h1 {
+        color: #36454F;
+        font-size: 28px;
+        margin: 0; /* Remove default margin */
+        border-bottom: 2px solid #dee2e6;
+        
+    }
 
-.profile-name {
-    font-size: 16px; 
-    margin: 0; 
-}
+    /* Header Content Styles */
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
 
-.profile-role {
-    font-size: 12px;
-    color: #6c757d;
-}
+    /* Search Bar Styles */
+    .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-.header-content {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 20px;
-}
+    .search-input {
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        width: 300px;
+        height: 20px;
+        font-size: 16px;
+    }
 
-.nav {
-    margin-top: 20px;
-}
+    .search-button {
+        background-color: #899499;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.nav ul {
-    list-style: none; 
-    padding: 0; 
-}
+    /* Profile Bar Styles */
+    .profile-bar {
+        display: flex; 
+        justify-content: flex-end
+        align-items: center; 
+        gap: 10px;
+        border-left: 1px solid #ced4da; 
+        padding-left: 20px; 
+    }
 
-.nav ul li {
-    margin-bottom: 15px;
-}
+    .profile-picture {
+        width: 40px; 
+        height: 40px;
+        border-radius: 50%; 
+    }
 
-.nav ul li a {
-    text-decoration: none; 
-    color: #343a40; 
-}
+    .profile-info {
+        text-align: left; 
+    }
 
-.nav ul li a:hover {
-    color: #007bff; 
-}
+    .profile-name {
+        font-size: 16px; 
+        margin: 0; 
+        color: #333;
+    }
 
-.logo {
-    width: 100%; 
-    max-width: 180px; 
-    margin-bottom: 20px; 
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto; 
-    border-radius: 100px;
-}
+    .profile-role {
+        font-size: 12px;
+        color: #6c757d;
+    }
 
-table {
-    width: 80%; 
-    border-collapse: collapse;
-    margin-left: 140px;
-    
-}
+    table {
+        width: 80%; 
+        border-collapse: collapse;
+        margin-left: 140px;
+        
+    }
 
-th, td {
-    border: 2px solid #000;
-    padding: 10px;
-    text-align: center;
-}
+    th, td {
+        border: 2px solid #000;
+        padding: 10px;
+        text-align: center;
+    }
 
-th {
-    background-color: #f3f3f3;
-    font-weight: bold;
-}
+    th {
+        background-color: #f3f3f3;
+        font-weight: bold;
+    }
 
-h1 {
-    text-align: center;
-    margin-top: 5px;
+    .dashboard-title {
+       text-align: center;
+       font-size: 32px;
+       color: #36454F;
+       margin-top: 20px;
+       font-weight: bold;
+       text-transform: uppercase;
 }
+/* Styles for Teacher's Schedule Title */
+    .schedule-title {
+       text-align: center;
+       font-size: 28px;
+       color: #2f4f4f;
+       margin-top: 10px;
+       font-weight: normal;
+       padding-bottom: 10px;
+}
+    .header {
+        font-weight: bolder;
+        font-size: 18px;
+        padding: 10px;
+        text-align: center; 
+    }
 
-.header {
-    font-weight: bolder;
-    font-size: 18px;
-    padding: 10px;
-    text-align: center; 
-}
+    .subheader {
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center; 
+    }
 
-.subheader {
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: center; 
-}
+    .teacher-info {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-.teacher-info {
-    text-align: center;
-    margin-bottom: 20px;
-}
+    .sched {
+        background-color: #59f771; 
+    }
 
-.sched {
-    background-color: #59f771; 
-}
-
-.lunch-break {
-    background-color: #ffdd99; 
-    font-weight: bold;
-}
+    .lunch-break {
+        background-color: #ffdd99; 
+        font-weight: bold;
+    }
     </style>
 
 <body>
 <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <img src="image/logo3.jpg" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
@@ -212,11 +252,8 @@ h1 {
 
 <main class="main-content">
             <div class="header">
+            <h1 class="dashboard-title">Teacher's Dashboard</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
@@ -228,8 +265,8 @@ h1 {
             </div>
 
 <div class="teacher-info">
-        <h1>TEACHER'S SCHEDULE</h1>
-        <p class="header">Mr. Andrew "Waldo" Tate</p>
+        <h1 class="schedule-title">TEACHER'S SCHEDULE</h1>
+        <p class="subheader">Mr. Andrew "Waldo" Tate</p>
         <p class="subheader">Teacher I – English Teacher</p>
     </div>
 

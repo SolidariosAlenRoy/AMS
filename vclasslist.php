@@ -84,10 +84,12 @@ body, h2, h4, p, ul {
 
 .logo {
   width: 100%; 
-  max-width: 200px; 
+  max-width: 210px; 
   margin-bottom: 20px; 
   display: block; 
-  border-radius: 100px;
+  border-radius: 110px;
+  border: 3px solid transparent;
+  box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
 }
 
 /* Main Content */
@@ -130,7 +132,7 @@ body, h2, h4, p, ul {
   padding: 10px;
   border: 1px solid #ced4da;
   border-radius: 5px;
-  width: 300px;
+  width: 1100px;
   height: 20px;
   font-size: 16px;
 }
@@ -274,7 +276,7 @@ th {
 <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/logo.png" alt="Logo" class="logo"> 
+    <img src="image/logo3.jpg" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
@@ -292,10 +294,6 @@ th {
             <div class="header">
                 <h1>View Class List</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
@@ -332,7 +330,11 @@ th {
 </form>
 
 
-      <div class="card">                 
+      <div class="card">  
+      <div class="search-bar">
+                        <input type="text" placeholder="Search..." class="search-input">
+                        <button class="search-button"><i class="fas fa-search"></i></button>
+                    </div>               
         <div id="classList">
             <!-- Empty table structure -->
             <table id="classListTable">
@@ -357,36 +359,50 @@ th {
 </div>
 
 <script>
-    $(document).ready(function() {
-        // Load the class list when either dropdown is changed
-        $('#sectionDropdown, #yearLevelDropdown').change(function() {
-            var sectionId = $('#sectionDropdown').val();
-            var yearLevel = $('#yearLevelDropdown').val();
-            if (sectionId && yearLevel) {
-                loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
-            } else {
-                // If no selection, reset the table to default message
-                $('#classListTable tbody').html('<tr><td colspan="5" style="text-align: center;">Please select a year level and section.</td></tr>');
-            }
-        });
-
-        // Function to load class list with pagination
-        function loadClassList(sectionId, yearLevel, page) {
-            $.ajax({
-                url: 'fetch.php',
-                type: 'POST',
-                data: {section_id: sectionId, year_level: yearLevel, page: page},
-                success: function(response) {
-                    $('#classList').html(response); // Replace the table with the new class list data
-                    // Add event listener for pagination buttons
-                    $('.pagination-btn').on('click', function() {
-                        var selectedPage = $(this).data('page');
-                        loadClassList(sectionId, yearLevel, selectedPage);
-                    });
-                }
-            });
+    $(document).ready(function () {
+    // Load the class list when either dropdown is changed
+    $('#sectionDropdown, #yearLevelDropdown').change(function () {
+        var sectionId = $('#sectionDropdown').val();
+        var yearLevel = $('#yearLevelDropdown').val();
+        if (sectionId && yearLevel) {
+            loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
+        } else {
+            // If no selection, reset the table to default message
+            $('#classListTable tbody').html('<tr><td colspan="5" style="text-align: center;">Please select a year level and section.</td></tr>');
         }
     });
+
+    // Function to load class list with pagination
+    function loadClassList(sectionId, yearLevel, page) {
+        $.ajax({
+            url: 'fetch.php',
+            type: 'POST',
+            data: { section_id: sectionId, year_level: yearLevel, page: page },
+            success: function (response) {
+                $('#classList').html(response); // Replace the table with the new class list data
+                // Add event listener for pagination buttons
+                $('.pagination-btn').on('click', function () {
+                    var selectedPage = $(this).data('page');
+                    loadClassList(sectionId, yearLevel, selectedPage);
+                });
+            }
+        });
+    }
+
+    // Dynamic search filter
+    $('.search-input').on('input', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        $('#classListTable tbody tr').each(function () {
+            var rowText = $(this).text().toLowerCase();
+            if (rowText.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+
 </script>
 </body>
 </html>

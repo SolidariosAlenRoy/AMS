@@ -140,12 +140,14 @@ body, h2, h4, p{
 
 .logo {
     width: 100%; 
-    max-width: 180px; 
+    max-width: 210px; 
     margin-bottom: 20px; 
     display: block; 
     margin-left: auto; 
     margin-right: auto; 
-    border-radius: 100px;
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
 }
 
 /* Main Content Styles */
@@ -362,7 +364,7 @@ td a:hover {
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+    <img src="image/logo3.jpg" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
