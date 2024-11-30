@@ -6,15 +6,18 @@ require 'db.php';
 $section_id = null;
 $subject_id = null;
 $year_level = null;
-$subject_name = ''; // Initialize subject_name to avoid undefined variable warning
+$attendance_date = date('Y-m-d'); // Default to today's date
+$subject_name = ''; 
 
-// Display students based on selected section, subject, and year level
+
+
+// Display students based on selected section, subject, year level, and date
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $section_id = $_POST['section'];
     $subject_id = $_POST['subject'];
     $year_level = $_POST['year_level'];
+    $attendance_date = $_POST['attendance_date']; // Retrieve selected date
 
-    // Only fetch subject name if $subject_id is set
     if ($subject_id) {
         $subject_query = "SELECT subject_name FROM subjects WHERE id = ?";
         $stmt_subject = $conn->prepare($subject_query);
@@ -26,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -62,6 +66,7 @@ body, h2, h4, p, ul {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 .main-content {
@@ -232,6 +237,17 @@ label {
 .form-item {
     display: flex;
     flex-direction: column;
+}
+
+input[type="date"] {
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
 }
 
 /* Dropdown */
@@ -408,6 +424,12 @@ tr:hover {
                 </select>
             </div>
 
+            <div class="form-item">
+            <label for="attendance_date">Select Date:</label>
+            <input type="date" name="attendance_date" value="<?php echo $attendance_date; ?>" required>
+            </div>
+
+
             <!-- Load Students Button -->
             <div class="form-item">
                 <button type="submit" style="margin-top: 10px;">Load Students</button>
@@ -415,9 +437,6 @@ tr:hover {
         </div>
     </form>
 </div>
-
-
-
 
 
 <div class="form-container-wrapper">
