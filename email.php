@@ -143,36 +143,6 @@ body, h2, h4, p, ul {
     gap: 20px;
 }
 
-/* Search Bar Styles */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
-}
-
-.search-button {
-    background-color: #899499;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Profile Bar Styles */
 .profile-bar {
     display: flex; 

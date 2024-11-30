@@ -22,12 +22,14 @@ $year_levels_result = $conn->query($year_levels_query);
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    
-   
-   <style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
 /* General Reset */
-body, h2, h4, p, ul {
+body{
+  margin: 0;
+  padding: 0;
+}
+h2, h4, p, ul {
   margin: 0;
   padding: 0;
 }
@@ -182,7 +184,6 @@ body, h2, h4, p, ul {
 }
 
 /* Dropdown Common Styles */
-
 select {
   width: 460px; 
   padding: 10px; 
@@ -217,8 +218,6 @@ select option {
   background-color: #f8f9fa;
   margin-bottom: 20px;
 }
-
-
 
 /* Styling for the dropdown row */
 .dropdown-row {
@@ -265,6 +264,51 @@ th {
   color: #007bff;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
+}
+
+/* Styling for the container holding the buttons */
+.buttons-container {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 20px; 
+  margin-top: 10px;
+}
+
+/* Styling for each button */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Specific styling for PDF button */
+#generatePDF {
+  background-color: #e74c3c;
+  color: white;
+}
+
+#generatePDF:hover {
+  background-color: #c0392b;
+}
+
+/* Specific styling for CSV button */
+#generateCSV {
+  background-color: #27ae60;
+  color: white;
+}
+
+#generateCSV:hover {
+  background-color: #2ecc71;
+}
+
+button i {
+  margin-right: 8px; /* Space between icon and text */
 }
 
 
@@ -330,36 +374,47 @@ th {
 </form>
 
 
-      <div class="card">  
-      <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>               
-        <div id="classList">
-            <!-- Empty table structure -->
-            <table id="classListTable">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Year Level</th>
-                        <th>Section</th>
-                        <th>Parent's Email</th>
-                        <th>Contact Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="5" style="text-align: center;">Please select a year level and section.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    </main>
+<div class="card">
+    <div class="search-bar">
+        <input type="text" placeholder="Search..." class="search-input">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+    </div> 
+
+    <!-- Add Generate PDF and CSV Buttons -->
+<div class="buttons-container">
+    <button id="generatePDF" class="search-button">
+        <i class="fas fa-file-pdf"></i> Generate PDF
+    </button>
+    <button id="generateCSV" class="search-button">
+        <i class="fas fa-file-csv"></i> Generate CSV
+    </button>
 </div>
+        
+    <div id="classList">
+        <table id="classListTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Year Level</th>
+                    <th>Section</th>
+                    <th>Parent's Email</th>
+                    <th>Contact Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" style="text-align: center;">Please select a year level and section.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <script>
     $(document).ready(function () {
+      bindGenerateFunctions();
+
     // Load the class list when either dropdown is changed
     $('#sectionDropdown, #yearLevelDropdown').change(function () {
         var sectionId = $('#sectionDropdown').val();
@@ -374,20 +429,80 @@ th {
 
     // Function to load class list with pagination
     function loadClassList(sectionId, yearLevel, page) {
-        $.ajax({
-            url: 'fetch.php',
-            type: 'POST',
-            data: { section_id: sectionId, year_level: yearLevel, page: page },
-            success: function (response) {
-                $('#classList').html(response); // Replace the table with the new class list data
-                // Add event listener for pagination buttons
-                $('.pagination-btn').on('click', function () {
-                    var selectedPage = $(this).data('page');
-                    loadClassList(sectionId, yearLevel, selectedPage);
-                });
-            }
+    $.ajax({
+        url: 'fetch.php',
+        type: 'POST',
+        data: { section_id: sectionId, year_level: yearLevel, page: page },
+        success: function (response) {
+            $('#classList').html(response); // Replace the table with the new class list data
+
+            // Rebind PDF and CSV generation after table update
+            bindGenerateFunctions();
+
+            // Add event listener for pagination buttons
+            $('.pagination-btn').on('click', function () {
+                var selectedPage = $(this).data('page');
+                loadClassList(sectionId, yearLevel, selectedPage);
+            });
+        }
+    });
+}
+
+
+
+function bindGenerateFunctions() {
+    // PDF Generation
+    $('#generatePDF').off('click').on('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Get updated table data
+        const table = document.getElementById('classListTable');
+        const rows = [...table.rows];
+
+        // Set title
+        doc.text('Class List', 10, 10);
+
+        // Add table rows to PDF
+        let y = 20; // Start y position for table
+        rows.forEach((row, index) => {
+            const cells = [...row.cells];
+            let x = 10; // Start x position
+            cells.forEach((cell) => {
+                doc.text(cell.innerText, x, y);
+                x += 50; // Adjust column spacing
+            });
+            y += 10; // Adjust row spacing
         });
-    }
+
+        // Save PDF
+        doc.save('Class_List.pdf');
+    });
+
+    // CSV Generation
+    $('#generateCSV').off('click').on('click', function () {
+        const table = document.getElementById('classListTable');
+        const rows = [...table.rows];
+
+        // Convert table rows to CSV format
+        let csvContent = '';
+        rows.forEach((row) => {
+            const cells = [...row.cells];
+            const rowContent = cells.map(cell => `"${cell.innerText}"`).join(',');
+            csvContent += rowContent + '\n';
+        });
+
+        // Create a Blob and download the CSV file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Class_List.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
 
     // Dynamic search filter
     $('.search-input').on('input', function () {
@@ -402,7 +517,6 @@ th {
         });
     });
 });
-
 </script>
 </body>
 </html>
