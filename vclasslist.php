@@ -9,6 +9,7 @@ $sections_result = $conn->query($sections_query);
 // Fetch distinct year levels from the students table
 $year_levels_query = "SELECT DISTINCT year_level FROM students";
 $year_levels_result = $conn->query($year_levels_query);
+
 ?>
 
 <!DOCTYPE html>
@@ -529,7 +530,7 @@ function bindGenerateFunctions() {
         let csvContent = '';
         rows.forEach((row) => {
             const cells = [...row.cells];
-            const rowContent = cells.map(cell => `"${cell.innerText}"`).join(',');
+            const rowContent = cells.map(cell => "${cell.innerText}").join(',');
             csvContent += rowContent + '\n';
         });
 
