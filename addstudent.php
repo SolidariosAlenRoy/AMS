@@ -114,32 +114,42 @@ if (isset($_GET['delete_id'])) {
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
 /* Global Styles */
-body, h2, h4, p{
+body{
     margin: 0;
-    padding: 0;
+    padding: 0; 
+  
+}
 
+h2, h4, p, ul {
+    margin: 0;
+    padding: 0;  
 }
 
 /* Container for Sidebar and Main Content */
 .container {
     display: flex;
-    height: 100vh; 
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
 }
 
 /* Sidebar Styles */
 .sidebar {
-    width: 250px; 
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
     background-color: #343a40;
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 100%;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
 }
 
 .sidebar h4 {
-    font-size: 24px;
+    font-size: 26px;
     color: #ffc107; 
     margin-bottom: 20px;
     text-align: center;
@@ -173,12 +183,14 @@ body, h2, h4, p{
 
 .logo {
     width: 100%; 
-    max-width: 180px; 
+    max-width: 210px; 
     margin-bottom: 20px; 
     display: block; 
     margin-left: auto; 
     margin-right: auto; 
-    border-radius: 100px;
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
 }
 
 /* Main Content Styles */
@@ -210,36 +222,6 @@ body, h2, h4, p{
     gap: 20px;
 }
 
-/* Search Bar Styles */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
-}
-
-.search-button {
-    background-color: #899499;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Profile Bar Styles */
 .profile-bar {
     display: flex; 
@@ -269,6 +251,67 @@ body, h2, h4, p{
     font-size: 12px;
     color: #6c757d;
 }
+
+
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    margin-top: 20px; 
+}
+
+/* Schedule Card Specific Styles */
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Dashboard Card */
+.dashboard-card {
+    background-color: #7393B3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    min-width: 200px;
+    flex: 1 0 200px; 
+    max-width: 250px; 
+}
+
+.dashboard-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.dashboard-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #36454F;
+    margin-bottom: 5px;
+}
+
+.dashboard-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Info Container */
+.info-container {
+    display: flex; 
+    justify-content: space-between; 
+    max-width: 1200px; 
+    width: 100%; 
+    margin: 20px auto; 
+    height: auto;   
+}
+
 
 /* Form */
 .form-container-wrapper {
@@ -433,7 +476,7 @@ td a:hover {
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
-    <img src="image/classtrack.png" alt="Logo" class="logo"> 
+        <img src="image/logo3.jpg" alt="Logo" class="logo"> 
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>

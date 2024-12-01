@@ -46,65 +46,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <link href="css/dashboard.css" rel="stylesheet">
         <style>
 
-/* General Reset */
-body, h2, h4, p, ul {
+/* Global Styles */
+body{
     margin: 0;
-    padding: 0;
+    padding: 0; 
+  
 }
 
-/* Layout */
+h2, h4, p, ul {
+    margin: 0;
+    padding: 0;  
+}
+
+/* Container for Sidebar and Main Content */
 .container {
     display: flex;
-    height: 100vh;
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
 }
 
+/* Sidebar Styles */
 .sidebar {
-    width: 250px;
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
     background-color: #343a40;
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 100%;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
-    background-color: #fff;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #dee2e6;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    gap: 20px;
-}
-
-/* Sidebar */
-.logo {
-    width: 100%;
-    max-width: 210px;
-    margin-bottom: 20px;
-    display: block;
-    border-radius: 110px;
-    border: 3px solid transparent;
-    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
 }
 
 .sidebar h4 {
     font-size: 26px;
-    color: #ffc107;
+    color: #ffc107; 
     margin-bottom: 20px;
     text-align: center;
 }
 
 .nav ul {
-    list-style: none;
+    list-style: none; 
     width: 100%;
     text-align: left;
     padding: 0;
@@ -115,8 +100,8 @@ body, h2, h4, p, ul {
 }
 
 .nav ul li a {
-    text-decoration: none;
-    color: #adb5bd;
+    text-decoration: none; 
+    color: #adb5bd; 
     font-size: 16px;
     display: block;
     padding: 10px;
@@ -126,74 +111,72 @@ body, h2, h4, p, ul {
 
 .nav ul li a:hover {
     background-color: #495057;
-    color: #fff;
+    color: #fff; 
 }
 
-/* Header */
+.logo {
+    width: 100%; 
+    max-width: 210px; 
+    margin-bottom: 20px; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 0; /* Add padding for spacing */
+    margin-bottom: 20px; /* Adjust margin for more space below header */
+    gap: 20px;
+}
+
 .header h1 {
     color: #36454F;
     font-size: 28px;
-    margin: 0;
+    margin: 0; /* Remove default margin */
 }
 
+/* Header Content Styles */
 .header-content {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-/* Search Bar */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
-}
-
-.search-button {
-    background-color: #899499;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Profile Bar */
+/* Profile Bar Styles */
 .profile-bar {
-    display: flex;
-    align-items: center;
+    display: flex; 
+    align-items: center; 
     gap: 10px;
-    border-left: 1px solid #ced4da;
-    padding-left: 20px;
+    border-left: 1px solid #ced4da; 
+    padding-left: 20px; 
 }
 
 .profile-picture {
-    width: 40px;
+    width: 40px; 
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50%; 
 }
 
 .profile-info {
-    text-align: left;
+    text-align: left; 
 }
 
 .profile-name {
-    font-size: 16px;
-    margin: 0;
+    font-size: 16px; 
+    margin: 0; 
     color: #333;
 }
 
@@ -424,10 +407,12 @@ tr:hover {
                 </select>
             </div>
 
-            <div class="form-item">
-            <label for="attendance_date">Select Date:</label>
-            <input type="date" name="attendance_date" value="<?php echo $attendance_date; ?>" required>
-            </div>
+            <!-- Attendance Date -->
+            <!-- Add a date picker field for selecting attendance date -->
+<div class="form-item">
+    <label for="attendance_date">Select Attendance Date:</label>
+    <input type="date" name="attendance_date" value="<?php echo date('Y-m-d'); ?>" required />
+</div>
 
 
             <!-- Load Students Button -->
@@ -444,6 +429,7 @@ tr:hover {
         <input type="hidden" name="year_level" value="<?php echo $year_level; ?>">
         <input type="hidden" name="section" value="<?php echo $section_id; ?>">
         <input type="hidden" name="subject" value="<?php echo $subject_id; ?>">
+        <input type="hidden" name="attendance_date" value="<?php echo $attendance_date; ?>">
 
         <!-- Table Container -->
         <div class="table-container-wrapper">

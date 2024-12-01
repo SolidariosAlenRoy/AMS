@@ -95,21 +95,27 @@ body, h2, h4, p, ul {
     padding: 0;
 }
 
-/* Container Layout */
+/* Container for Sidebar and Main Content */
 .container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh; /* Full height */
+  margin-left: 290px; /* Account for the sidebar width */
 }
 
-/* Sidebar */
+/* Sidebar Styles */
 .sidebar {
-    width: 250px;
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
     background-color: #343a40;
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
 }
 
 .sidebar h4 {

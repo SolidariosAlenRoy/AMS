@@ -24,164 +24,205 @@ $year_levels_result = $conn->query($year_levels_query);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
-/* General Reset */
+/* Global Styles */
 body{
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0; 
+  
 }
+
 h2, h4, p, ul {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;  
 }
 
-/* Layout Containers */
+/* Container for Sidebar and Main Content */
 .container {
-  display: flex;
-  height: 100vh; 
+    display: flex;
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
 }
 
-/* Sidebar */
+/* Sidebar Styles */
 .sidebar {
-  width: 250px; 
-  background-color: #343a40;
-  color: #fff;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
 }
 
 .sidebar h4 {
-  font-size: 26px;
-  color: #ffc107; 
-  margin-bottom: 20px;
-  text-align: center;
+    font-size: 26px;
+    color: #ffc107; 
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .nav ul {
-  list-style: none; 
-  width: 100%;
-  text-align: left;
-  padding: 0;
+    list-style: none; 
+    width: 100%;
+    text-align: left;
+    padding: 0;
 }
 
 .nav ul li {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .nav ul li a {
-  text-decoration: none; 
-  color: #adb5bd; 
-  font-size: 16px;
-  display: block;
-  padding: 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+    text-decoration: none; 
+    color: #adb5bd; 
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .nav ul li a:hover {
-  background-color: #495057;
-  color: #fff; 
+    background-color: #495057;
+    color: #fff; 
 }
 
 .logo {
-  width: 100%; 
-  max-width: 210px; 
-  margin-bottom: 20px; 
-  display: block; 
-  border-radius: 110px;
-  border: 3px solid transparent;
-  box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+    width: 100%; 
+    max-width: 210px; 
+    margin-bottom: 20px; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
 }
 
-/* Main Content */
+/* Main Content Styles */
 .main-content {
-  flex: 1;
-  padding: 20px;
+    flex: 1;
+    padding: 20px;
 }
 
-/* Header */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #dee2e6;
-  padding: 10px 0;
-  margin-bottom: 20px;
-  gap: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 0; /* Add padding for spacing */
+    margin-bottom: 20px; /* Adjust margin for more space below header */
+    gap: 20px;
 }
 
 .header h1 {
-  color: #36454F;
-  font-size: 28px;
-  margin: 0;
+    color: #36454F;
+    font-size: 28px;
+    margin: 0; /* Remove default margin */
 }
 
+/* Header Content Styles */
 .header-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-/* Search Bar */
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-input {
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  width: 1100px;
-  height: 20px;
-  font-size: 16px;
-}
-
-.search-button {
-  background-color: #899499;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Profile Bar */
+/* Profile Bar Styles */
 .profile-bar {
-  display: flex; 
-  align-items: center; 
-  gap: 10px;
-  border-left: 1px solid #ced4da; 
-  padding-left: 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+    border-left: 1px solid #ced4da; 
+    padding-left: 20px; 
 }
 
 .profile-picture {
-  width: 40px; 
-  height: 40px;
-  border-radius: 50%; 
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%; 
 }
 
 .profile-info {
-  text-align: left; 
+    text-align: left; 
 }
 
 .profile-name {
-  font-size: 16px; 
-  margin: 0; 
-  color: #333;
+    font-size: 16px; 
+    margin: 0; 
+    color: #333;
 }
 
 .profile-role {
-  font-size: 12px;
-  color: #6c757d;
+    font-size: 12px;
+    color: #6c757d;
 }
+
+
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    margin-top: 20px; 
+}
+
+/* Schedule Card Specific Styles */
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Dashboard Card */
+.dashboard-card {
+    background-color: #7393B3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    min-width: 200px;
+    flex: 1 0 200px; 
+    max-width: 250px; 
+}
+
+.dashboard-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.dashboard-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #36454F;
+    margin-bottom: 5px;
+}
+
+.dashboard-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Info Container */
+.info-container {
+    display: flex; 
+    justify-content: space-between; 
+    max-width: 1200px; 
+    width: 100%; 
+    margin: 20px auto; 
+    height: auto;   
+}
+
 
 /* Dropdown Common Styles */
 select {

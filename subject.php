@@ -81,32 +81,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_subject'])) {
     <link href="css/dashboard.css" rel="stylesheet"> 
     <style>
 /* Global Styles */
-body, h2, h4, p{
+body{
     margin: 0;
-    padding: 0;
+    padding: 0; 
+  
+}
 
+h2, h4, p, ul {
+    margin: 0;
+    padding: 0;  
 }
 
 /* Container for Sidebar and Main Content */
 .container {
     display: flex;
-    height: 100vh; 
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
 }
 
 /* Sidebar Styles */
 .sidebar {
-    width: 250px; 
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
     background-color: #343a40;
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 100%;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
 }
 
 .sidebar h4 {
-    font-size: 24px;
+    font-size: 26px;
     color: #ffc107; 
     margin-bottom: 20px;
     text-align: center;
@@ -179,36 +189,6 @@ body, h2, h4, p{
     gap: 20px;
 }
 
-/* Search Bar Styles */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
-}
-
-.search-button {
-    background-color: #899499;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Profile Bar Styles */
 .profile-bar {
     display: flex; 
@@ -238,6 +218,7 @@ body, h2, h4, p{
     font-size: 12px;
     color: #6c757d;
 }
+
 
 /* Form */
 .form-container-wrapper {
