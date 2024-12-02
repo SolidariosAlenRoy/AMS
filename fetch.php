@@ -6,48 +6,43 @@ if (isset($_POST['section_id']) && isset($_POST['year_level'])) {
     $section_id = $_POST['section_id'];
     $year_level = $_POST['year_level'];
 
-    // Fetch the section name for display
-    $section_query = "SELECT section_name FROM sections WHERE id = ?";
-    $section_stmt = $conn->prepare($section_query);
-    $section_stmt->bind_param('i', $section_id);
-    $section_stmt->execute();
-    $section_result = $section_stmt->get_result();
-    $section_name = ($section_result->num_rows > 0) ? $section_result->fetch_assoc()['section_name'] : 'N/A';
-
-    // Fetch students for the selected section and year level
-    $students_query = "SELECT name, parent_email, contact_number
-                       FROM students
-                       WHERE section_id = ? AND year_level = ?";
+    // Fetch students based on section and year level
+    $students_query = "SELECT name, year_level, section_id, parent_email, contact_number FROM students WHERE section_id = ? AND year_level = ?";
     $stmt = $conn->prepare($students_query);
     $stmt->bind_param('is', $section_id, $year_level);
     $stmt->execute();
-    $students_result = $stmt->get_result();
+    $result = $stmt->get_result();
 
-    if ($students_result->num_rows > 0) {
-        echo '<table>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Year Level</th>
-                    <th>Section</th>
-                    <th>Parent\'s Email</th>
-                    <th>Contact Number</th>
-                </tr>';
-        while ($row = $students_result->fetch_assoc()) {
-            echo '<tr>
-                    <td>' . htmlspecialchars($row['name']) . '</td>
-                    <td>' . htmlspecialchars($year_level) . '</td>
-                    <td>' . htmlspecialchars($section_name) . '</td>
-                    <td>' . htmlspecialchars($row['parent_email']) . '</td>
-                    <td>' . htmlspecialchars($row['contact_number']) . '</td>
-                  </tr>';
+     // Create the table
+    echo '<table id="studentsTable" class="display">';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th>Name</th>';
+    echo '<th>Year Level</th>';
+    echo '<th>Section ID</th>';
+    echo '<th>Parent Email</th>';
+    echo '<th>Contact Number</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>';
+            echo '<td>' . htmlspecialchars($row['name']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['year_level']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['section_id']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['parent_email']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['contact_number']) . '</td>';
+            echo '</tr>';
         }
-        echo '</table>';
     } else {
-        echo '<p>No students found for the selected section and year level.</p>';
+        echo '<tr><td colspan="5" style="text-align: center;">No students found for the selected year level and section.</td></tr>';
     }
-} else {
-    echo '<p>Error: Section ID or Year Level not set.</p>';
+
+    
 }
+
 
 if (isset($_POST['mode'])) {
     $mode = $_POST['mode'];
@@ -117,7 +112,5 @@ if (isset($_POST['mode'])) {
         }
     }
 }
-
-
-
 ?>
+

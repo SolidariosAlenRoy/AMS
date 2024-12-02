@@ -10,6 +10,32 @@ $sections_result = $conn->query($sections_query);
 $year_levels_query = "SELECT DISTINCT year_level FROM students";
 $year_levels_result = $conn->query($year_levels_query);
 
+
+// Function to generate CSV
+if (isset($_POST['generate_csv'])) {
+    $section = $_POST['section'];
+    $year_level = $_POST['year_level'];
+
+    $query = "SELECT students.name, students.year_level, sections.section_name, students.parent_email, students.contact_number 
+              FROM students 
+              INNER JOIN sections ON students.section_id = sections.id 
+              WHERE students.year_level = '$year_level' AND students.section_id = '$section'";
+    $result = $conn->query($query);
+
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="class_list.csv"');
+
+    $output = fopen("php://output", "w");
+    fputcsv($output, ['Student Name', 'Year Level', 'Section', 'Parent\'s Email', 'Contact Number']);
+
+    while ($row = $result->fetch_assoc()) {
+        fputcsv($output, $row);
+    }
+    fclose($output);
+    exit;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -24,18 +50,17 @@ $year_levels_result = $conn->query($year_levels_query);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    
     <style>
 /* Global Styles */
-body{
+body, h2, h4, p, ul{
     margin: 0;
     padding: 0; 
   
 }
 
-h2, h4, p, ul {
-    margin: 0;
-    padding: 0;  
-}
+
 
 /* Container for Sidebar and Main Content */
 .container {
@@ -274,86 +299,48 @@ select option {
 }
 
 
-/* Table Styling */
-table {
-  width: 100%; 
-  border-collapse: collapse; 
-  margin-top: 20px;
-}
+/* Card Container */
+.card-container {
+            display: flex;
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
 
-th, td {
-  border: 1px solid #ced4da; 
-  padding: 10px; 
-  text-align: left;
-}
+        /* Card Styling */
+        .card {
+            background-color: #fff;
+            border: 2px solid #6c757d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
 
-th {
-  background-color: #708090;
-  color: #fff;
-}
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #007bff;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
 
-.card {
-  background-color: #fff;
-  border: 2px solid #6c757d;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-.card h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #007bff;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-}
+        th, td {
+            border: 1px solid #ced4da; 
+            padding: 10px; 
+            text-align: left;
+        }
 
-/* Styling for the container holding the buttons */
-.buttons-container {
-  display: flex;
-  justify-content: flex-start; 
-  gap: 20px; 
-  margin-top: 10px;
-}
-
-/* Styling for each button */
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Specific styling for PDF button */
-#generatePDF {
-  background-color: #e74c3c;
-  color: white;
-}
-
-#generatePDF:hover {
-  background-color: #c0392b;
-}
-
-/* Specific styling for CSV button */
-#generateCSV {
-  background-color: #27ae60;
-  color: white;
-}
-
-#generateCSV:hover {
-  background-color: #2ecc71;
-}
-
-button i {
-  margin-right: 8px; /* Space between icon and text */
-}
-
-
+        th {
+            background-color: #708090;
+            color: #fff;
+        }
 
     </style>
 </head>
@@ -375,11 +362,12 @@ button i {
     </nav>
 </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
+<!-- Main Content -->
+<main class="main-content">
             <div class="header">
                 <h1>View Class List</h1>
                 <div class="header-content">
+                    
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
@@ -390,175 +378,104 @@ button i {
                 </div>
             </div>
 
+            <div class="card">
             <form method="POST" id="sectionForm">
-    <div class="dropdown-container">
-        <div class="dropdown-row">
-            <div>
-                <label for="yearLevelDropdown" class="label">Select Year Level:</label>
-                <select name="year_level" id="yearLevelDropdown" required>
-                    <option value="">--select--</option>
-                    <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
-                        <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div>
-                <label for="sectionDropdown" class="label">Select Section:</label>
-                <select name="section" id="sectionDropdown" required>
-                    <option value="">--select--</option>
-                    <?php while ($row = $sections_result->fetch_assoc()) : ?>
-                        <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
+            <label for="yearLevelDropdown">Select Year Level:</label>
+            <select name="year_level" id="yearLevelDropdown" required>
+                <option value="">Select Year Level</option>
+                <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="section">Select Section:</label>
+            <select name="section" id="sectionDropdown" required>
+                <option value="">Select Section</option>
+                <?php while ($row = $sections_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
+                <?php endwhile; ?>
+            </select>
+            <button type="submit" name="generate_csv" class="btn btn-primary">Generate CSV</button>
+        </form>
         </div>
-    </div>
-</form>
 
-
-<div class="card">
-    <div class="search-bar">
-        <input type="text" placeholder="Search..." class="search-input">
-        <button class="search-button"><i class="fas fa-search"></i></button>
-    </div> 
-
-    <!-- Add Generate PDF and CSV Buttons -->
-<div class="buttons-container">
-    <button id="generatePDF" class="search-button">
-        <i class="fas fa-file-pdf"></i> Generate PDF
-    </button>
-    <button id="generateCSV" class="search-button">
-        <i class="fas fa-file-csv"></i> Generate CSV
-    </button>
+        <div class="card" id="classList">
+            <!-- Empty table structure -->
+            <table id="classListTable">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Year Level</th>
+                        <th>Section</th>
+                        <th>Parent's Email</th>
+                        <th>Contact Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" style="text-align: center;">Please select a year level and section.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </main>
 </div>
-        
-    <div id="classList">
-        <table id="classListTable">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Year Level</th>
-                    <th>Section</th>
-                    <th>Parent's Email</th>
-                    <th>Contact Number</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="5" style="text-align: center;">Please select a year level and section.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
 
 <script>
-    $(document).ready(function () {
-      bindGenerateFunctions();
-
-    // Load the class list when either dropdown is changed
-    $('#sectionDropdown, #yearLevelDropdown').change(function () {
-        var sectionId = $('#sectionDropdown').val();
-        var yearLevel = $('#yearLevelDropdown').val();
-        if (sectionId && yearLevel) {
-            loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
-        } else {
-            // If no selection, reset the table to default message
-            $('#classListTable tbody').html('<tr><td colspan="5" style="text-align: center;">Please select a year level and section.</td></tr>');
-        }
-    });
-
-    // Function to load class list with pagination
-    function loadClassList(sectionId, yearLevel, page) {
-    $.ajax({
-        url: 'fetch.php',
-        type: 'POST',
-        data: { section_id: sectionId, year_level: yearLevel, page: page },
-        success: function (response) {
-            $('#classList').html(response); // Replace the table with the new class list data
-
-            // Rebind PDF and CSV generation after table update
-            bindGenerateFunctions();
-
-            // Add event listener for pagination buttons
-            $('.pagination-btn').on('click', function () {
-                var selectedPage = $(this).data('page');
-                loadClassList(sectionId, yearLevel, selectedPage);
-            });
-        }
-    });
-}
-
-
-
-function bindGenerateFunctions() {
-    // PDF Generation
-    $('#generatePDF').off('click').on('click', function () {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        // Get updated table data
-        const table = document.getElementById('classListTable');
-        const rows = [...table.rows];
-
-        // Set title
-        doc.text('Class List', 10, 10);
-
-        // Add table rows to PDF
-        let y = 20; // Start y position for table
-        rows.forEach((row, index) => {
-            const cells = [...row.cells];
-            let x = 10; // Start x position
-            cells.forEach((cell) => {
-                doc.text(cell.innerText, x, y);
-                x += 50; // Adjust column spacing
-            });
-            y += 10; // Adjust row spacing
-        });
-
-        // Save PDF
-        doc.save('Class_List.pdf');
-    });
-
-    // CSV Generation
-    $('#generateCSV').off('click').on('click', function () {
-        const table = document.getElementById('classListTable');
-        const rows = [...table.rows];
-
-        // Convert table rows to CSV format
-        let csvContent = '';
-        rows.forEach((row) => {
-            const cells = [...row.cells];
-            const rowContent = cells.map(cell => "${cell.innerText}").join(',');
-            csvContent += rowContent + '\n';
-        });
-
-        // Create a Blob and download the CSV file
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Class_List.csv';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-}
-
-    // Dynamic search filter
-    $('.search-input').on('input', function () {
-        var searchTerm = $(this).val().toLowerCase();
-        $('#classListTable tbody tr').each(function () {
-            var rowText = $(this).text().toLowerCase();
-            if (rowText.includes(searchTerm)) {
-                $(this).show();
+    $(document).ready(function() {
+        // Load the class list when either dropdown is changed
+        $('#sectionDropdown, #yearLevelDropdown').change(function() {
+            var sectionId = $('#sectionDropdown').val();
+            var yearLevel = $('#yearLevelDropdown').val();
+            if (sectionId && yearLevel) {
+                loadClassList(sectionId, yearLevel, 1); // Load page 1 by default
             } else {
-                $(this).hide();
+                // If no selection, reset the table to default message
+                $('#classListTable tbody').html('<tr><td colspan="5" style="text-align: center;">Please select a year level and section.</td></tr>');
             }
         });
+
+        // Function to load class list with pagination
+        function loadClassList(sectionId, yearLevel, page) {
+            $.ajax({
+                url: 'fetch.php',
+                type: 'POST',
+                data: {section_id: sectionId, year_level: yearLevel, page: page},
+                success: function(response) {
+                    $('#classList').html(response); // Replace the table with the new class list data
+                    // Add event listener for pagination buttons
+                    $('.pagination-btn').on('click', function() {
+                        var selectedPage = $(this).data('page');
+                        loadClassList(sectionId, yearLevel, selectedPage);
+                    });
+                }
+            });
+        }
     });
-});
+
+    function bindGenerateFunctions() {
+        document.getElementById('generatePDF').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Class List", 10, 10);
+            const table = document.getElementById('classListTable');
+            const rows = [...table.rows];
+            const data = rows.map(row => [...row.cells].map(cell => cell.textContent));
+            doc.autoTable({ head: [data[0]], body: data.slice(1) });
+            doc.save("class_list.pdf");
+        });
+
+        document.getElementById('sectionForm').addEventListener('change', function () {
+            const yearLevel = document.getElementById('yearLevelDropdown').value;
+            const section = document.getElementById('sectionDropdown').value;
+
+            document.getElementById('csvYearLevel').value = yearLevel;
+            document.getElementById('csvSection').value = section;
+        });
+    }
+
+    bindGenerateFunctions();
 </script>
 </body>
 </html>
