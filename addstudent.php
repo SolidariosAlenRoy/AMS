@@ -252,7 +252,6 @@ h2, h4, p, ul {
     color: #6c757d;
 }
 
-
 /* Card Container */
 .card-container {
     display: flex;
@@ -401,6 +400,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 th, td {
@@ -468,7 +468,6 @@ td a[href*="classlist.php?delete_id"]:hover {
 td a:hover {
     cursor: pointer;
 }
-
 
     </style>
 </head>

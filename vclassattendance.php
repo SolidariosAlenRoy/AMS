@@ -2,6 +2,7 @@
 // Assume the necessary database connection is established
 session_start();
 require 'db.php';
+require 'fpdf/fpdf.php'; // Include FPDF library
 
 // Initialize variables for attendance records
 $attendance_records = [];
@@ -15,7 +16,7 @@ $subjects_result = $conn->query("SELECT * FROM subjects");
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['view_class_attendance'])) {
+    if (isset($_POST['view_class_attendance']) || isset($_POST['generate_class_pdf'])) {
         // Code to view class attendance
         $attendance_date = $_POST['attendance_date'];
         $year_level = $_POST['year_level'];
@@ -50,7 +51,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
         }
-    } elseif (isset($_POST['view_student_attendance'])) {
+
+        // Generate PDF if requested
+        if (isset($_POST['generate_class_pdf'])) {
+            $pdf = new FPDF();
+            $pdf->AddPage();
+            $pdf->SetFont('Arial', 'B', 14);
+            $pdf->Cell(0, 10, 'Class Attendance Report', 0, 1, 'C');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R');
+            $pdf->Ln(5);
+
+            // Table headers
+            $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
+            foreach ($headers as $header) {
+                $pdf->Cell(50, 10, $header, 1, 0, 'C');
+            }
+            $pdf->Ln();
+
+            // Table data
+            foreach ($attendance_records as $record) {
+                $pdf->Cell(30, 10, $record['attendance_date'], 1);
+                $pdf->Cell(50, 10, $record['student_name'], 1);
+                $pdf->Cell(30, 10, $record['year_level'], 1);
+                $pdf->Cell(30, 10, $record['section_name'], 1);
+                $pdf->Cell(30, 10, $record['subject_name'], 1);
+                $pdf->Cell(30, 10, $record['status'], 1);
+                $pdf->Ln();
+            }
+
+            $pdf->Output('D', 'class_attendance.pdf');
+            exit;
+        }
+    } elseif (isset($_POST['view_student_attendance']) || isset($_POST['generate_student_pdf'])) {
         // Code to handle specific student attendance viewing
         $attendance_date = $_POST['attendance_date'];
         $student_id = $_POST['student'];
@@ -73,9 +106,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
         }
+
+// Generate PDF if requested
+if (isset($_POST['generate_class_pdf'])) {
+    $pdf = new FPDF();
+    $pdf->AddPage('P', 'A4'); // 'P' for portrait, 'A4' for page size
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, 'Class Attendance Report', 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R');
+    $pdf->Ln(5);
+
+    // Define column widths
+    $columnWidths = [30, 50, 20, 25, 35, 30]; // Total = 190 mm (fits A4 width)
+
+    // Table headers
+    $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
+    foreach ($headers as $index => $header) {
+        $pdf->Cell($columnWidths[$index], 10, $header, 1, 0, 'C');
+    }
+    $pdf->Ln();
+
+    // Table data
+    foreach ($attendance_records as $record) {
+        $pdf->Cell($columnWidths[0], 10, $record['attendance_date'], 1);
+        $pdf->Cell($columnWidths[1], 10, $record['student_name'], 1);
+        $pdf->Cell($columnWidths[2], 10, $record['year_level'], 1);
+        $pdf->Cell($columnWidths[3], 10, $record['section_name'], 1);
+        $pdf->Cell($columnWidths[4], 10, $record['subject_name'], 1);
+        $pdf->Cell($columnWidths[5], 10, $record['status'], 1);
+        $pdf->Ln();
+    }
+
+    $pdf->Output('D', 'class_attendance.pdf');
+    exit;
+}
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -378,6 +447,7 @@ th {
                     </select>
 
                     <button type="submit" name="view_class_attendance">View Attendance</button>
+                    <button type="submit" name="generate_class_pdf">Generate PDF</button>
                 </form>
 
                 <table>
@@ -429,6 +499,7 @@ th {
                     </select>
 
                     <button type="submit" name="view_student_attendance">View Attendance</button>
+                    <button type="submit" name="generate_student_pdf">Generate PDF</button>
                 </form>
 
                 <table>

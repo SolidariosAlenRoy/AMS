@@ -1,5 +1,6 @@
 <?php
 require 'db.php';
+require 'fpdf/fpdf.php'; // Include FPDF
 session_start();
 
 // Fetch sections for the dropdown menu
@@ -9,7 +10,6 @@ $sections_result = $conn->query($sections_query);
 // Fetch distinct year levels from the students table
 $year_levels_query = "SELECT DISTINCT year_level FROM students";
 $year_levels_result = $conn->query($year_levels_query);
-
 
 // Function to generate CSV
 if (isset($_POST['generate_csv'])) {
@@ -33,6 +33,67 @@ if (isset($_POST['generate_csv'])) {
     }
     fclose($output);
     exit;
+}
+
+// Function to generate PDF
+if (isset($_POST['generate_pdf'])) {
+    $section = $_POST['section'];
+    $year_level = $_POST['year_level'];
+
+    $query = "SELECT students.name, students.year_level, sections.section_name, students.parent_email, students.contact_number 
+              FROM students 
+              INNER JOIN sections ON students.section_id = sections.id 
+              WHERE students.year_level = '$year_level' AND students.section_id = '$section'";
+    $result = $conn->query($query);
+
+   // Function to generate PDF
+if (isset($_POST['generate_pdf'])) {
+    $section = $_POST['section'];
+    $year_level = $_POST['year_level'];
+
+    $query = "SELECT students.name, students.year_level, sections.section_name, students.parent_email, students.contact_number 
+              FROM students 
+              INNER JOIN sections ON students.section_id = sections.id 
+              WHERE students.year_level = '$year_level' AND students.section_id = '$section'";
+    $result = $conn->query($query);
+
+    // Create a new PDF instance
+    $pdf = new FPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, "CLASS LIST", 0, 1, 'C');
+    $pdf->Ln(5);
+
+    // Add generated time and date
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R'); // Align to the right
+    $pdf->Ln(5);
+
+    // Table header
+    $pdf->SetFont('Arial', 'B', 10);
+    $cellWidths = [50, 30, 30, 50, 30]; // Adjust column widths proportionally (total 190mm)
+    $headers = ['Student Name', 'Year Level', 'Section', "Parent's Email", 'Contact Number'];
+
+    foreach ($headers as $key => $header) {
+        $pdf->Cell($cellWidths[$key], 10, $header, 1, 0, 'C');
+    }
+    $pdf->Ln();
+
+    // Table rows
+    $pdf->SetFont('Arial', '', 10);
+    while ($row = $result->fetch_assoc()) {
+        $pdf->Cell($cellWidths[0], 10, $row['name'], 1);
+        $pdf->Cell($cellWidths[1], 10, $row['year_level'], 1);
+        $pdf->Cell($cellWidths[2], 10, $row['section_name'], 1);
+        $pdf->Cell($cellWidths[3], 10, $row['parent_email'], 1);
+        $pdf->Cell($cellWidths[4], 10, $row['contact_number'], 1);
+        $pdf->Ln();
+    }
+
+    // Output the PDF
+    $pdf->Output('D', 'class_list.pdf');
+    exit;
+}
 }
 
 
@@ -59,8 +120,6 @@ body, h2, h4, p, ul{
     padding: 0; 
   
 }
-
-
 
 /* Container for Sidebar and Main Content */
 .container {
@@ -298,7 +357,6 @@ select option {
   font-weight: bold;
 }
 
-
 /* Card Container */
 .card-container {
             display: flex;
@@ -341,6 +399,46 @@ select option {
             background-color: #708090;
             color: #fff;
         }
+
+        /* Button Styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-right: 10px; /* Add spacing between buttons */
+}
+
+/* Primary Button (CSV) */
+.btn-primary {
+    background-color: #007bff; /* Blue */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Secondary Button (PDF) */
+.btn-secondary {
+    background-color: #6c757d; /* Gray */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #495057; /* Darker gray on hover */
+}
+
+/* Add some spacing to ensure buttons look good in forms */
+form .btn {
+    margin-top: 20px;
+}
+
 
     </style>
 </head>
@@ -396,6 +494,7 @@ select option {
                 <?php endwhile; ?>
             </select>
             <button type="submit" name="generate_csv" class="btn btn-primary">Generate CSV</button>
+            <button type="submit" name="generate_pdf" class="btn btn-secondary">Generate PDF</button>
         </form>
         </div>
 
@@ -454,28 +553,7 @@ select option {
         }
     });
 
-    function bindGenerateFunctions() {
-        document.getElementById('generatePDF').addEventListener('click', function () {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text("Class List", 10, 10);
-            const table = document.getElementById('classListTable');
-            const rows = [...table.rows];
-            const data = rows.map(row => [...row.cells].map(cell => cell.textContent));
-            doc.autoTable({ head: [data[0]], body: data.slice(1) });
-            doc.save("class_list.pdf");
-        });
-
-        document.getElementById('sectionForm').addEventListener('change', function () {
-            const yearLevel = document.getElementById('yearLevelDropdown').value;
-            const section = document.getElementById('sectionDropdown').value;
-
-            document.getElementById('csvYearLevel').value = yearLevel;
-            document.getElementById('csvSection').value = section;
-        });
-    }
-
-    bindGenerateFunctions();
+    
 </script>
 </body>
 </html>
