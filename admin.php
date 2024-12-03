@@ -432,10 +432,6 @@ header .calendar-navigation span:hover {
             <div class="header">
                 <h1>Admin's Dashboard</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">

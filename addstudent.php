@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php'; // Database connection
+require 'db.php'; 
 
 // Handle Add Student
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contact_number = $_POST['contact_number'];
     $year_level = $_POST['year_level'];
     $section_name = $_POST['section'];
-    $subjects = isset($_POST['subjects']) ? $_POST['subjects'] : [];
+    $subjects = $_POST['subjects'] ?? [];
 
     // Check or insert section
     $section_query = "SELECT id FROM sections WHERE section_name = ?";
@@ -42,11 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $subject_stmt->bind_param('ii', $student_id, $subject_id);
             $subject_stmt->execute();
         }
-        echo " ";
+        echo "<p>Student added successfully!</p>";
     } else {
         echo "<p>Error: " . $stmt->error . "</p>";
     }
 }
+
 
 // Handle Filters
 $selected_section = isset($_GET['section']) ? $_GET['section'] : '';
@@ -455,12 +456,12 @@ td a[href*="editstudent.php"]:hover {
 }
 
 /* Delete Button Style */
-td a[href*="classlist.php?delete_id"] {
+td a[href*="addstudent.php?delete_id"] {
     background-color: #dc3545; /* Red for Delete */
     color: white;
 }
 
-td a[href*="classlist.php?delete_id"]:hover {
+td a[href*="addstudent.php?delete_id"]:hover {
     background-color: #c82333; /* Darker red for hover */
 }
 
@@ -481,9 +482,9 @@ td a:hover {
         <ul>
             <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul>
     </nav>
 </aside>
@@ -579,7 +580,7 @@ td a:hover {
                             <td><?= $row['section_name'] ?></td>
                             <td>
                             <a href="editstudent.php?id=<?php echo $row['id']; ?>">Edit</a>  
-                            <a href="classlist.php?delete_id=<?php echo $row['id']; ?>"onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                            <a href="addstudent.php?delete_id=<?php echo $row['id']; ?>"onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
                             </td>   
                         </tr>
                     <?php } ?>

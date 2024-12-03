@@ -331,9 +331,9 @@ td a:hover {
         <ul>
             <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul>
     </nav>
 </aside>
@@ -344,10 +344,6 @@ td a:hover {
             <div class="header">
                 <h1>Manage Teachers</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">

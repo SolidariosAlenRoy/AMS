@@ -1,34 +1,69 @@
 <?php
+session_start();
 require 'db.php';
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+// Check if ID is provided
+if (!isset($_GET['id'])) {
+    die("No student ID provided.");
+}
 
-    // Fetch the student details
-    $query = "SELECT * FROM students WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $student = $result->fetch_assoc();
+$id = $_GET['id'];
 
-    // Fetch the student's section
-    $section_query = "SELECT section_name FROM sections WHERE id = ?";
-    $section_stmt = $conn->prepare($section_query);
-    $section_stmt->bind_param('i', $student['section_id']);
-    $section_stmt->execute();
-    $section_result = $section_stmt->get_result();
-    $section = $section_result->fetch_assoc()['section_name'];
+// Fetch the student details
+$query = "SELECT * FROM students WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$student = $result->fetch_assoc();
 
-    // Fetch the student's subjects
-    $subject_query = "SELECT subject_id FROM student_subjects WHERE student_id = ?";
-    $subject_stmt = $conn->prepare($subject_query);
-    $subject_stmt->bind_param('i', $id);
-    $subject_stmt->execute();
-    $subject_result = $subject_stmt->get_result();
-    $student_subjects = [];
-    while ($row = $subject_result->fetch_assoc()) {
-        $student_subjects[] = $row['subject_id'];
+if (!$student) {
+    die("Student not found.");
+}
+
+// Fetch the student's section
+$section_query = "SELECT section_name FROM sections WHERE id = ?";
+$section_stmt = $conn->prepare($section_query);
+$section_stmt->bind_param('i', $student['section_id']);
+$section_stmt->execute();
+$section_result = $section_stmt->get_result();
+$section = $section_result->fetch_assoc()['section_name'] ?? '';
+
+// Fetch the student's subjects
+$subject_query = "SELECT subject_id FROM student_subjects WHERE student_id = ?";
+$subject_stmt = $conn->prepare($subject_query);
+$subject_stmt->bind_param('i', $id);
+$subject_stmt->execute();
+$subject_result = $subject_stmt->get_result();
+$student_subjects = [];
+while ($row = $subject_result->fetch_assoc()) {
+    $student_subjects[] = $row['subject_id'];
+}
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'];
+    $parent_email = $_POST['parent_email'];
+    $contact_number = $_POST['contact_number'];
+    $section_name = $_POST['section'];
+    $subjects = $_POST['subjects'] ?? [];
+
+    // Check if section exists, if not, insert it
+    $section_check_query = "SELECT id FROM sections WHERE section_name = ?";
+    $section_check_stmt = $conn->prepare($section_check_query);
+    $section_check_stmt->bind_param('s', $section_name);
+    $section_check_stmt->execute();
+    $section_check_stmt->store_result();
+
+    if ($section_check_stmt->num_rows > 0) {
+        $section_check_stmt->bind_result($section_id);
+        $section_check_stmt->fetch();
+    } else {
+        $insert_section_query = "INSERT INTO sections (section_name) VALUES (?)";
+        $insert_section_stmt = $conn->prepare($insert_section_query);
+        $insert_section_stmt->bind_param('s', $section_name);
+        $insert_section_stmt->execute();
+        $section_id = $conn->insert_id;
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -36,15 +71,16 @@ if (isset($_GET['id'])) {
         $parent_email = $_POST['parent_email'];
         $contact_number = $_POST['contact_number'];
         $section_name = $_POST['section'];
-        $subjects = isset($_POST['subjects']) ? $_POST['subjects'] : [];
-
+        $year_level = $_POST['year_level']; // Capture year level from the form
+        $subjects = $_POST['subjects'] ?? [];
+    
         // Check if section exists, if not, insert it
         $section_check_query = "SELECT id FROM sections WHERE section_name = ?";
         $section_check_stmt = $conn->prepare($section_check_query);
         $section_check_stmt->bind_param('s', $section_name);
         $section_check_stmt->execute();
         $section_check_stmt->store_result();
-
+    
         if ($section_check_stmt->num_rows > 0) {
             $section_check_stmt->bind_result($section_id);
             $section_check_stmt->fetch();
@@ -55,40 +91,43 @@ if (isset($_GET['id'])) {
             $insert_section_stmt->execute();
             $section_id = $conn->insert_id;
         }
-
-        // Update student details
-        $update_query = "UPDATE students SET name = ?, parent_email = ?, contact_number = ?, section_id = ? WHERE id = ?";
+    
+        // Update student details, including year level
+        $update_query = "UPDATE students SET name = ?, parent_email = ?, contact_number = ?, section_id = ?, year_level = ? WHERE id = ?";
         $update_stmt = $conn->prepare($update_query);
-        $update_stmt->bind_param('sssii', $name, $parent_email, $contact_number, $section_id, $id);
-
+        $update_stmt->bind_param('sssiii', $name, $parent_email, $contact_number, $section_id, $year_level, $id);
+    
         if ($update_stmt->execute()) {
             // Update student subjects
             $delete_subjects_query = "DELETE FROM student_subjects WHERE student_id = ?";
             $delete_subjects_stmt = $conn->prepare($delete_subjects_query);
             $delete_subjects_stmt->bind_param('i', $id);
             $delete_subjects_stmt->execute();
-
+    
             foreach ($subjects as $subject_id) {
                 $insert_subject_query = "INSERT INTO student_subjects (student_id, subject_id) VALUES (?, ?)";
                 $insert_subject_stmt = $conn->prepare($insert_subject_query);
                 $insert_subject_stmt->bind_param('ii', $id, $subject_id);
                 $insert_subject_stmt->execute();
             }
-
-            echo "Student updated successfully!";
+    
+            // Redirect to the Add Student page after successful update
+        header('Location: addstudent.php');
+            exit(); // Ensure no further code is executed after the redirect
         } else {
-            echo "Error: " . $update_stmt->error;
+            echo "<p>Error: " . $update_stmt->error . "</p>";
         }
     }
+    
 }
 ?>
-
+``
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin's Dashboard</title>
+    <title>Manage Students Dashboard</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- FullCalendar CSS -->
@@ -235,6 +274,7 @@ h2, h4, p, ul {
     color: #6c757d;
 }
 
+
 /* Form */
 .form-container-wrapper {
     border: 2px solid #6c757d;
@@ -319,31 +359,30 @@ button:hover {
 }
 
 
-
-
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
         <img src="image/logo3.jpg" alt="Logo" class="logo"> 
-        <h4 class="text-primary">CLASS TRACK</h4>
-        <nav class="nav">
-            <ul>
-                <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-                <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
-                <li><a href="subject.php"><i class="fas fa-book"></i> Manage Subject</a></li>
-                <li><a href="login.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
+    <nav class="nav">
+        <ul>
+            <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+        </ul>
+    </nav>
+</aside>
 
-    <!-- Main Content -->
+
+<!-- Main Content -->
     <main class="main-content">
         <div class="header">
-            <h1>Admin's Dashboard</h1>
+            <h1>Manage Students</h1>
             <div class="header-content">
                 <div class="profile-bar">
                     <img src="image/profile.png" alt="Profile Picture" class="profile-picture">
@@ -357,7 +396,7 @@ button:hover {
 
         <!-- Form Container -->
         <div class="form-container-wrapper">
-            <form method="POST" action="editstudent.php?id=<?php echo $id; ?>">
+        <form method="POST" action="editstudent.php?id=<?php echo $id; ?>" onsubmit="return confirmUpdate();">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" value="<?php echo $student['name']; ?>" required>
 
@@ -366,6 +405,14 @@ button:hover {
 
                 <label for="contact_number">Contact Number:</label>
                 <input type="text" id="contact_number" name="contact_number" value="<?php echo $student['contact_number']; ?>">
+
+                <label for="year_level">Year Level:</label>
+                <select name="year_level" id="year_level">
+                    <option value="7" <?php if ($student['year_level'] == 7) echo 'selected'; ?>>7</option>
+                    <option value="8" <?php if ($student['year_level'] == 8) echo 'selected'; ?>>8</option>
+                    <option value="9" <?php if ($student['year_level'] == 9) echo 'selected'; ?>>9</option>
+                    <option value="10" <?php if ($student['year_level'] == 10) echo 'selected'; ?>>10</option>
+                </select>
 
                 <label for="section">Section:</label>
                 <input type="text" id="section" name="section" value="<?php echo $section; ?>" required>
@@ -387,7 +434,12 @@ button:hover {
     </main>
 </div>
 
-
+<script>
+    function confirmUpdate() {
+        // Display a confirmation message
+        return confirm("Are you sure you want to update this students's details?");
+    }
+</script>
     
 
     

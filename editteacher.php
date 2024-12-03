@@ -25,6 +25,9 @@ if (isset($_GET['id'])) {
 
         if ($update_stmt->execute()) {
             echo "Teacher updated successfully!";
+            // Optionally, redirect after successful update
+            header("Location: addteacher.php");
+            exit;
         } else {
             echo "Error: " . $update_stmt->error;
         }
@@ -283,9 +286,9 @@ button:hover {
         <ul>
             <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul>
     </nav>
 </aside>
@@ -294,12 +297,8 @@ button:hover {
         <!-- Main Content -->
         <main class="main-content">
             <div class="header">
-                <h1>Admin's Dashboard</h1>
+                <h1>Manage Teachers</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
@@ -311,21 +310,23 @@ button:hover {
             </div>
 
             <div class="form-container-wrapper">
-            <form method="POST" action="edit_teacher.php?id=<?php echo $id; ?>">
-                <input type="text" name="name" value="<?php echo $teacher['name']; ?>" required>
-                <input type="email" name="email" value="<?php echo $teacher['email']; ?>">
-                <input type="text" name="contact_number" value="<?php echo $teacher['contact_number']; ?>">
-                <button type="submit">Update Teacher</button>
-            </form>
+            <form method="POST" action="editteacher.php?id=<?php echo $id; ?>" onsubmit="return confirmUpdate();">
+                    <input type="text" name="name" value="<?php echo $teacher['name']; ?>" required>
+                    <input type="email" name="email" value="<?php echo $teacher['email']; ?>">
+                    <input type="text" name="contact_number" value="<?php echo $teacher['contact_number']; ?>">
+                    <button type="submit">Update Teacher</button>
+                </form>
             </div>
-
-
-
             </div>
         </main>
  
     
-
+        <script>
+    function confirmUpdate() {
+        // Display a confirmation message
+        return confirm("Are you sure you want to update this teacher's details?");
+    }
+</script>
     
 </body>
 </html>

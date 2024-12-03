@@ -58,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_subject'])) {
     $update_stmt->bind_param('si', $new_subject_name, $edit_id);
 
     if ($update_stmt->execute()) {
-        echo "Subject updated successfully!";
         header("Location: subject.php");
         exit();
     } else {
@@ -349,11 +348,11 @@ td a:hover {
     <h4 class="text-primary"><i class=""></i>CLASS TRACK</h4>
     <nav class="nav">
         <ul>
-            <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul>
     </nav>
 </aside>
@@ -364,10 +363,6 @@ td a:hover {
             <div class="header">
                 <h1>Manage Subject</h1>
                 <div class="header-content">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." class="search-input">
-                        <button class="search-button"><i class="fas fa-search"></i></button>
-                    </div>
                     <div class="profile-bar">
                         <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
                         <div class="profile-info">
@@ -379,12 +374,14 @@ td a:hover {
             </div>
 
             <div class="form-container-wrapper">
-        <form method="POST" action="subject.php<?php if ($edit_subject) echo '?edit_id=' . $edit_id; ?>">
-            <input type="text" name="subject_name" placeholder="Subject Name" value="<?php echo htmlspecialchars($subject_name); ?>" required>
-            <button type="submit" name="<?php echo $edit_subject ? 'edit_subject' : 'add_subject'; ?>">
-                <?php echo $edit_subject ? 'Update Subject' : 'Add Subject'; ?>
-            </button>
-        </form>
+            <form method="POST" action="subject.php<?php if ($edit_subject) echo '?edit_id=' . $edit_id; ?>">
+                <input type="text" name="subject_name" placeholder="Subject Name" value="<?php echo htmlspecialchars($subject_name); ?>" required>
+                <button type="submit" name="<?php echo $edit_subject ? 'edit_subject' : 'add_subject'; ?>"
+                    onclick="return confirm('Are you sure you want to <?php echo $edit_subject ? 'update' : 'add'; ?> this subject?')">
+                    <?php echo $edit_subject ? 'Update Subject' : 'Add Subject'; ?>
+                </button>
+            </form>
+
         
         <h2>Existing Subjects</h2>
         <table>
