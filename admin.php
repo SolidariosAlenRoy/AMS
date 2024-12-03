@@ -419,9 +419,9 @@ header .calendar-navigation span:hover {
         <ul>
             <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-            <li><a href="addteacher.php"><i class="fas fa-teacher-alt"></i> Manage Teacher</a></li>
-            <li><a href="subject.php"><i class="fas fa-subject-alt"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-subject-alt"></i>Logout</a></li>
+            <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
+            <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
+            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul>
     </nav>
 </aside>
