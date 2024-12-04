@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
 }
+$userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
 ?>
 ``
 <!DOCTYPE html>
@@ -127,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Students Dashboard</title>
+    <title>Manage Students</title>
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- FullCalendar CSS -->
@@ -251,8 +252,10 @@ h2, h4, p, ul {
     gap: 10px;
     border-left: 1px solid #ced4da; 
     padding-left: 20px; 
+    cursor: pointer;
 }
 
+/* Profile Picture and Info */
 .profile-picture {
     width: 40px; 
     height: 40px;
@@ -273,6 +276,46 @@ h2, h4, p, ul {
     font-size: 12px;
     color: #6c757d;
 }
+
+/* Dropdown Styles */
+.profile-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; 
+    top: 60px; /* Adjust the position to show below the profile */
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.profile-dropdown a {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-dropdown a {
+    border-bottom: 1px solid #ccc;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.profile-dropdown.show {
+    display: block;
+}
+
 
 
 /* Form */
@@ -373,7 +416,7 @@ button:hover {
             <li><a href="addstudent.php"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
             <li><a href="addteacher.php"><i class="fas fa-chalkboard-teacher"></i> Manage Teacher</a></li>
             <li><a href="subject.php"><i class="fas fa-book-open"></i> Manage Subject</a></li>
-            <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li><a href="register.php"><i class="fas fa-user-plus"></i>Register Acc.</a></li>
         </ul>
     </nav>
 </aside>
@@ -384,12 +427,17 @@ button:hover {
         <div class="header">
             <h1>Manage Students</h1>
             <div class="header-content">
-                <div class="profile-bar">
-                    <img src="image/profile.png" alt="Profile Picture" class="profile-picture">
+                    <!-- Profile Bar -->
+                    <div class="profile-bar" onclick="toggleDropdown(event)">
+                    <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> 
                     <div class="profile-info">
-                        <h5 class="profile-name">Name</h5>
-                        <p class="profile-role">Admin</p>
+                        <h5 class="profile-name"><?php echo htmlspecialchars($userName); ?></h5>
+                        <p class="profile-role"><?php echo htmlspecialchars($_SESSION['role'] ?? 'admin'); ?></p>
                     </div>
+                </div>
+                <!-- Dropdown Menu -->
+                <div id="profileDropdown" class="profile-dropdown">
+                    <a href="login.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
         </div>
@@ -435,6 +483,18 @@ button:hover {
 </div>
 
 <script>
+    // Toggle dropdown menu on click of profile image or name
+    function toggleDropdown(event) {
+    const dropdown = document.getElementById('profileDropdown');
+    
+    // Close the dropdown if the user clicks outside the profile bar
+    if (!event.target.closest('.profile-bar') && dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+    } else {
+        dropdown.classList.toggle('show');
+    }
+}
+
     function confirmUpdate() {
         // Display a confirmation message
         return confirm("Are you sure you want to update this students's details?");

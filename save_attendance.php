@@ -6,25 +6,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['attendance'])) {
     $year_level = $_POST['year_level'];
     $section_id = $_POST['section'];
     $subject_id = $_POST['subject'];
-    $attendance_data = $_POST['attendance'];  // Assuming this contains the student IDs and their respective statuses
+    $attendance_date = $_POST['attendance_date'];
+    $attendance_data = $_POST['attendance'];
 
     foreach ($attendance_data as $student_id => $status) {
-        // Ensure that the status is one of the expected values: 'Present', 'Absent', 'Late'
-        if (!in_array($status, ['Present', 'Absent', 'Late'])) {
-            $status = 'Absent'; // Default to 'Absent' if status is invalid
-        }
-
-        // Insert the attendance status into the database
         $query = "INSERT INTO attendance (student_id, year_level, section_id, subject_id, status, attendance_date) 
-                  VALUES (?, ?, ?, ?, ?, NOW())";
+                  VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param('iiiss', $student_id, $year_level, $section_id, $subject_id, $status);
+        $stmt->bind_param('iiisss', $student_id, $year_level, $section_id, $subject_id, $status, $attendance_date);
         $stmt->execute();
     }
 
-    // Redirect to view attendance page after saving
-    header("Location: attendance.php");
-    exit;
+    header('Location: attendance.php?success=1');
+    exit();
 } else {
     echo "No attendance data to save.";
 }

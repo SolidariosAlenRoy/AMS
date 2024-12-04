@@ -16,15 +16,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Verify password
     if ($user && password_verify($password, $user['password'])) {
+        // Determine role based on the length of the 'id' field
+        $idLength = strlen((string)$user['id']); // Convert to string and get length
+        if ($idLength === 1) {
+            $role = 'admin';
+        } elseif ($idLength === 2) {
+            $role = 'teacher';
+        } else {
+            $role = 'unknown';
+        }
+
         // Set session variables
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['role'] = $role;
 
         // Redirect based on role
-        if ($user['role'] == 'admin') {
-            header('Location: admin.php'); // Redirect to admin page if admin
-        } elseif ($user['role'] == 'teacher') {
-            header('Location: teacherint.php'); // Redirect to teacher page if teacher
+        if ($role === 'admin') {
+            header('Location: admin.php'); // Redirect to admin page
+        } elseif ($role === 'teacher') {
+            header('Location: teacherint.php'); // Redirect to teacher page
         } else {
             echo "Invalid role.";
         }
@@ -34,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

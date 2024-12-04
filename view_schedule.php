@@ -1,3 +1,7 @@
+<?php
+$userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,8 +129,10 @@ h2, h4, p, ul {
     gap: 10px;
     border-left: 1px solid #ced4da; 
     padding-left: 20px; 
+    cursor: pointer;
 }
 
+/* Profile Picture and Info */
 .profile-picture {
     width: 40px; 
     height: 40px;
@@ -146,6 +152,45 @@ h2, h4, p, ul {
 .profile-role {
     font-size: 12px;
     color: #6c757d;
+}
+
+/* Dropdown Styles */
+.profile-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; 
+    top: 60px; /* Adjust the position to show below the profile */
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.profile-dropdown a {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-dropdown a {
+    border-bottom: 1px solid #ccc;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.profile-dropdown.show {
+    display: block;
 }
 
 
@@ -290,22 +335,25 @@ h2, h4, p, ul {
 
 <main class="main-content">
             <div class="header">
-            <h1 class="dashboard-title">Teacher's Dashboard</h1>
+            <h1 class="dashboard-title">Teacher's Schedule</h1>
                 <div class="header-content">
-                    <div class="profile-bar">
-                        <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> <!-- Example profile image -->
-                        <div class="profile-info">
-                            <h5 class="profile-name">Name</h5>
-                            <p class="profile-role">Teacher</p>
-                        </div>
+                        <!-- Profile Bar -->
+                <div class="profile-bar" onclick="toggleDropdown(event)">
+                    <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> 
+                    <div class="profile-info">
+                        <h5 class="profile-name"><?php echo htmlspecialchars($userName); ?></h5>
+                        <p class="profile-role"><?php echo htmlspecialchars($_SESSION['role'] ?? 'teacher'); ?></p>
                     </div>
+                </div>
+                <!-- Dropdown Menu -->
+                <div id="profileDropdown" class="profile-dropdown">
+                    <a href="login.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
                 </div>
             </div>
 
 <div class="teacher-info">
         <h1 class="schedule-title">TEACHER'S SCHEDULE</h1>
-        <p class="subheader">Mr. Andrew "Waldo" Tate</p>
-        <p class="subheader">Teacher I – English Teacher</p>
     </div>
 
     <table>
@@ -378,3 +426,20 @@ h2, h4, p, ul {
             <td></td>
         </tr>
     </table>
+
+
+    <script>
+        // Toggle dropdown menu on click of profile image or name
+    function toggleDropdown(event) {
+    const dropdown = document.getElementById('profileDropdown');
+    
+    // Close the dropdown if the user clicks outside the profile bar
+    if (!event.target.closest('.profile-bar') && dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+    } else {
+        dropdown.classList.toggle('show');
+    }
+}
+    </script>
+    </body>
+</html>
