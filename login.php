@@ -151,6 +151,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="error-message"><?php echo $error_message; ?></div>
                 <?php endif; ?>
             </form>
+
+            <p style="margin-top: 10px; font-size: 14px; margin-top: 10px">
+               Don't have an account? <a href="register.php" style="color: #007bff; text-decoration: none;">Register here</a>.
+            </p>
         </div>
     </div>
 </body>

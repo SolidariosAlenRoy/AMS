@@ -4,9 +4,57 @@ session_start();
 require 'db.php';
 require 'fpdf/fpdf.php'; // Include FPDF library
 
-// Initialize variables for attendance records
-$attendance_records = [];
-$student_attendance_records = [];
+// Function to generate PDF
+function generatePDF($filename, $title, $headers, $data, $columnWidths) {
+    $pdf = new FPDF();
+    $pdf->AddPage('P', 'A4'); // 'P' for portrait, 'A4' for page size
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, $title, 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R');
+    $pdf->Ln(5);
+
+    // Table headers
+    foreach ($headers as $index => $header) {
+        $pdf->Cell($columnWidths[$index], 10, $header, 1, 0, 'C');
+    }
+    $pdf->Ln();
+
+    // Table data
+    if (!empty($data)) {
+        foreach ($data as $row) {
+            foreach ($row as $index => $cell) {
+                $pdf->Cell($columnWidths[$index], 10, $cell, 1);
+            }
+            $pdf->Ln();
+        }
+    } else {
+        $pdf->Cell(array_sum($columnWidths), 10, 'No records found.', 1, 0, 'C');
+    }
+
+    // Output the PDF
+    $pdf->Output('D', $filename);
+    exit;
+}
+
+// Function to generate CSV
+function generateCSV($filename, $headers, $data) {
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+    $output = fopen('php://output', 'w');
+    fputcsv($output, $headers);
+
+    if (!empty($data)) {
+        foreach ($data as $row) {
+            fputcsv($output, $row);
+        }
+    } else {
+        fputcsv($output, ['No records found.']);
+    }
+    fclose($output);
+    exit;
+}
 
 // Fetch year levels, sections, students, and subjects from the database
 $year_levels_result = $conn->query("SELECT DISTINCT year_level FROM students");
@@ -16,131 +64,100 @@ $subjects_result = $conn->query("SELECT * FROM subjects");
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['view_class_attendance']) || isset($_POST['generate_class_pdf'])) {
-        // Code to view class attendance
+    if (isset($_POST['view_class_attendance']) || isset($_POST['generate_class_pdf']) || isset($_POST['generate_class_csv'])) {
         $attendance_date = $_POST['attendance_date'];
         $year_level = $_POST['year_level'];
         $section_id = $_POST['section_id'];
-        $subject_id = isset($_POST['subject_id']) ? $_POST['subject_id'] : null; // Check if subject_id is set
+        $subject_id = isset($_POST['subject_id']) ? $_POST['subject_id'] : null;
 
-        $class_attendance_query = "
-            SELECT a.attendance_date, s.name AS student_name, a.year_level, sec.section_name, sub.subject_name, a.status AS status
+        $query = "
+            SELECT a.attendance_date, s.name AS student_name, a.year_level, sec.section_name, sub.subject_name, a.status
             FROM attendance a
             JOIN students s ON a.student_id = s.id
             JOIN sections sec ON a.section_id = sec.id
             JOIN subjects sub ON a.subject_id = sub.id
-            WHERE a.attendance_date = ? AND a.year_level = ? AND a.section_id = ?";
-        
-        // Add subject_id condition if it exists
+            WHERE a.attendance_date = ? AND a.year_level = ? AND a.section_id = ?
+        ";
         if ($subject_id) {
-            $class_attendance_query .= " AND a.subject_id = ?";
-        }
-        
-        $class_attendance_query .= " ORDER BY a.attendance_date DESC";
-
-        if ($stmt = $conn->prepare($class_attendance_query)) {
-            if ($subject_id) {
-                $stmt->bind_param("ssii", $attendance_date, $year_level, $section_id, $subject_id);
-            } else {
-                $stmt->bind_param("ssi", $attendance_date, $year_level, $section_id);
-            }
-            $stmt->execute();
-            $attendance_result = $stmt->get_result();
-            if ($attendance_result) {
-                $attendance_records = $attendance_result->fetch_all(MYSQLI_ASSOC);
-            }
-            $stmt->close();
+            $query .= " AND a.subject_id = ?";
         }
 
-        // Generate PDF if requested
+        $query .= " ORDER BY a.attendance_date DESC";
+        $stmt = $conn->prepare($query);
+
+        if ($subject_id) {
+            $stmt->bind_param("ssii", $attendance_date, $year_level, $section_id, $subject_id);
+        } else {
+            $stmt->bind_param("ssi", $attendance_date, $year_level, $section_id);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $attendance_records = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+
+        $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
+        $data = array_map(function ($record) {
+            return [
+                $record['attendance_date'],
+                $record['student_name'],
+                $record['year_level'],
+                $record['section_name'],
+                $record['subject_name'],
+                $record['status']
+            ];
+        }, $attendance_records);
+
+        // Generate PDF
         if (isset($_POST['generate_class_pdf'])) {
-            $pdf = new FPDF();
-            $pdf->AddPage();
-            $pdf->SetFont('Arial', 'B', 14);
-            $pdf->Cell(0, 10, 'Class Attendance Report', 0, 1, 'C');
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R');
-            $pdf->Ln(5);
-
-            // Table headers
-            $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
-            foreach ($headers as $header) {
-                $pdf->Cell(50, 10, $header, 1, 0, 'C');
-            }
-            $pdf->Ln();
-
-            // Table data
-            foreach ($attendance_records as $record) {
-                $pdf->Cell(30, 10, $record['attendance_date'], 1);
-                $pdf->Cell(50, 10, $record['student_name'], 1);
-                $pdf->Cell(30, 10, $record['year_level'], 1);
-                $pdf->Cell(30, 10, $record['section_name'], 1);
-                $pdf->Cell(30, 10, $record['subject_name'], 1);
-                $pdf->Cell(30, 10, $record['status'], 1);
-                $pdf->Ln();
-            }
-
-            $pdf->Output('D', 'class_attendance.pdf');
-            exit;
+            $columnWidths = [30, 50, 20, 25, 35, 30];
+            generatePDF('class_attendance.pdf', 'Class Attendance Report', $headers, $data, $columnWidths);
         }
-    } elseif (isset($_POST['view_student_attendance']) || isset($_POST['generate_student_pdf'])) {
-        // Code to handle specific student attendance viewing
+
+        // Generate CSV
+        if (isset($_POST['generate_class_csv'])) {
+            generateCSV('class_attendance.csv', $headers, $data);
+        }
+    } elseif (isset($_POST['view_student_attendance']) || isset($_POST['generate_student_pdf']) || isset($_POST['generate_student_csv'])) {
         $attendance_date = $_POST['attendance_date'];
         $student_id = $_POST['student'];
 
-        $student_attendance_query = "
-            SELECT a.attendance_date, s.name AS student_name, a.year_level, sec.section_name, sub.subject_name, a.status AS status
+        $query = "
+            SELECT a.attendance_date, s.name AS student_name, a.year_level, sec.section_name, sub.subject_name, a.status
             FROM attendance a
             JOIN students s ON a.student_id = s.id
             JOIN sections sec ON a.section_id = sec.id
             JOIN subjects sub ON a.subject_id = sub.id
             WHERE a.attendance_date = ? AND a.student_id = ?
-            ORDER BY a.attendance_date DESC";
+            ORDER BY a.attendance_date DESC
+        ";
 
-        if ($stmt = $conn->prepare($student_attendance_query)) {
-            $stmt->bind_param("si", $attendance_date, $student_id);
-            $stmt->execute();
-            $student_attendance_result = $stmt->get_result();
-            if ($student_attendance_result) {
-                $student_attendance_records = $student_attendance_result->fetch_all(MYSQLI_ASSOC);
-            }
-            $stmt->close();
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("si", $attendance_date, $student_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $student_attendance_records = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+
+        $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
+        $data = array_map(function ($record) {
+            return [
+                $record['attendance_date'],
+                $record['student_name'],
+                $record['year_level'],
+                $record['section_name'],
+                $record['subject_name'],
+                $record['status']
+            ];
+        }, $student_attendance_records);
+
+        // Generate PDF
+        if (isset($_POST['generate_student_pdf'])) {
+            $columnWidths = [30, 50, 20, 25, 35, 30];
+            generatePDF('student_attendance.pdf', 'Student Attendance Report', $headers, $data, $columnWidths);
         }
 
-// Generate PDF if requested
-if (isset($_POST['generate_class_pdf'])) {
-    $pdf = new FPDF();
-    $pdf->AddPage('P', 'A4'); // 'P' for portrait, 'A4' for page size
-    $pdf->SetFont('Arial', 'B', 14);
-    $pdf->Cell(0, 10, 'Class Attendance Report', 0, 1, 'C');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(0, 10, 'Generated on: ' . date('Y-m-d H:i:s'), 0, 1, 'R');
-    $pdf->Ln(5);
-
-    // Define column widths
-    $columnWidths = [30, 50, 20, 25, 35, 30]; // Total = 190 mm (fits A4 width)
-
-    // Table headers
-    $headers = ['Date', 'Student Name', 'Year Level', 'Section', 'Subject', 'Status'];
-    foreach ($headers as $index => $header) {
-        $pdf->Cell($columnWidths[$index], 10, $header, 1, 0, 'C');
-    }
-    $pdf->Ln();
-
-    // Table data
-    foreach ($attendance_records as $record) {
-        $pdf->Cell($columnWidths[0], 10, $record['attendance_date'], 1);
-        $pdf->Cell($columnWidths[1], 10, $record['student_name'], 1);
-        $pdf->Cell($columnWidths[2], 10, $record['year_level'], 1);
-        $pdf->Cell($columnWidths[3], 10, $record['section_name'], 1);
-        $pdf->Cell($columnWidths[4], 10, $record['subject_name'], 1);
-        $pdf->Cell($columnWidths[5], 10, $record['status'], 1);
-        $pdf->Ln();
-    }
-
-    $pdf->Output('D', 'class_attendance.pdf');
-    exit;
-}
+        // Generate CSV
+        if (isset($_POST['generate_student_csv'])) {
+            generateCSV('student_attendance.csv', $headers, $data);
+        }
     }
 }
 ?>
@@ -448,6 +465,7 @@ th {
 
                     <button type="submit" name="view_class_attendance">View Attendance</button>
                     <button type="submit" name="generate_class_pdf">Generate PDF</button>
+                    <button type="submit" name="generate_class_csv">Generate CSV</button>
                 </form>
 
                 <table>
@@ -500,6 +518,7 @@ th {
 
                     <button type="submit" name="view_student_attendance">View Attendance</button>
                     <button type="submit" name="generate_student_pdf">Generate PDF</button>
+                    <button type="submit" name="generate_student_csv">Generate CSV</button>
                 </form>
 
                 <table>
