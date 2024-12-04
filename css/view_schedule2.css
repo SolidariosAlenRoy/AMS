@@ -1,0 +1,301 @@
+/* Global Styles */
+body{
+    margin: 0;
+    padding: 0; 
+  
+}
+
+h2, h4, p, ul {
+    margin: 0;
+    padding: 0;  
+}
+
+/* Container for Sidebar and Main Content */
+.container {
+    display: flex;
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
+}
+
+.sidebar h4 {
+    font-size: 26px;
+    color: #ffc107; 
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.nav ul {
+    list-style: none; 
+    width: 100%;
+    text-align: left;
+    padding: 0;
+}
+
+.nav ul li {
+    margin-bottom: 20px;
+}
+
+.nav ul li a {
+    text-decoration: none; 
+    color: #adb5bd; 
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav ul li a:hover {
+    background-color: #495057;
+    color: #fff; 
+}
+
+.logo {
+    width: 100%; 
+    max-width: 210px; 
+    margin-bottom: 20px; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 0; /* Add padding for spacing */
+    margin-bottom: 20px; /* Adjust margin for more space below header */
+    gap: 20px;
+}
+
+.header h1 {
+    color: #36454F;
+    font-size: 28px;
+    margin: 0; /* Remove default margin */
+}
+
+/* Header Content Styles */
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Profile Bar Styles */
+.profile-bar {
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+    border-left: 1px solid #ced4da; 
+    padding-left: 20px; 
+    cursor: pointer;
+}
+
+/* Profile Picture and Info */
+.profile-picture {
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%; 
+}
+
+.profile-info {
+    text-align: left; 
+}
+
+.profile-name {
+    font-size: 16px; 
+    margin: 0; 
+    color: #333;
+}
+
+.profile-role {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Dropdown Styles */
+.profile-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; 
+    top: 60px; /* Adjust the position to show below the profile */
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.profile-dropdown a {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-dropdown a {
+    border-bottom: 1px solid #ccc;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    margin-top: 20px; 
+}
+
+/* Schedule Card Specific Styles */
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Dashboard Card */
+.dashboard-card {
+    background-color: #7393B3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    min-width: 200px;
+    flex: 1 0 200px; 
+    max-width: 250px; 
+}
+
+.dashboard-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.dashboard-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #36454F;
+    margin-bottom: 5px;
+}
+
+.dashboard-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Info Container */
+.info-container {
+    display: flex; 
+    justify-content: space-between; 
+    max-width: 1200px; 
+    width: 100%; 
+    margin: 20px auto; 
+    height: auto;   
+}
+
+    table {
+        width: 80%; 
+        border-collapse: collapse;
+        margin-left: 140px;
+        
+    }
+
+    th, td {
+        border: 2px solid #000;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f3f3f3;
+        font-weight: bold;
+    }
+
+    .dashboard-title {
+       text-align: center;
+       font-size: 32px;
+       color: #36454F;
+       margin-top: 20px;
+       font-weight: bold;
+       text-transform: uppercase;
+}
+/* Styles for Teacher's Schedule Title */
+    .schedule-title {
+       text-align: center;
+       font-size: 28px;
+       color: #2f4f4f;
+       margin-top: 10px;
+       font-weight: normal;
+       padding-bottom: 10px;
+}
+    .header {
+        font-weight: bolder;
+        font-size: 18px;
+        padding: 10px;
+        text-align: center; 
+    }
+
+    .subheader {
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center; 
+    }
+
+    .teacher-info {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sched {
+        background-color: #59f771; 
+    }
+
+    .lunch-break {
+        background-color: #ffdd99; 
+        font-weight: bold;
+    }

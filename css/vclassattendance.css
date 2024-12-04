@@ -1,0 +1,307 @@
+/* Reset */
+body, h2, h4, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for Sidebar and Main Content */
+.container {
+  display: flex;
+  height: 100vh; /* Full height */
+  margin-left: 290px; /* Account for the sidebar width */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;  /* Make the sidebar fixed */
+    top: 0;           /* Align it to the top of the page */
+    left: 0;          /* Align it to the left of the page */
+    width: 250px;     /* Set the sidebar width */
+    height: 100%;     /* Make it take the full height */
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    z-index: 100;     /* Ensure the sidebar stays on top of the content */
+}
+
+.sidebar h4 {
+    font-size: 26px;
+    color: #ffc107;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.logo {
+    width: 100%;
+    max-width: 210px;
+    margin: 0 auto 20px;
+    border-radius: 110px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 15px 5px rgba(0, 128, 128, 0.7);
+}
+
+.nav ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    text-align: left;
+}
+
+.nav ul li {
+    margin-bottom: 20px;
+}
+
+.nav ul li a {
+    display: block;
+    padding: 10px;
+    font-size: 16px;
+    color: #adb5bd;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav ul li a:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.header h1 {
+    color: #36454F;
+    font-size: 28px;
+    margin: 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    width: 300px;
+    height: 20px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    height: 40px;
+    font-size: 16px;
+    background-color: #899499;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Profile Bar Styles */
+.profile-bar {
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+    border-left: 1px solid #ced4da; 
+    padding-left: 20px; 
+    cursor: pointer;
+}
+
+/* Profile Picture and Info */
+.profile-picture {
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%; 
+}
+
+.profile-info {
+    text-align: left; 
+}
+
+.profile-name {
+    font-size: 16px; 
+    margin: 0; 
+    color: #333;
+}
+
+.profile-role {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Dropdown Styles */
+.profile-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; 
+    top: 60px; /* Adjust the position to show below the profile */
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.profile-dropdown a {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-dropdown a {
+    border-bottom: 1px solid #ccc;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.profile-dropdown.show {
+    display: block;
+}
+
+/* Tabs Styling */
+.tab {
+    display: inline-block;
+    padding: 12px 20px;
+    margin-right: 10px;
+    background-color: #36454F;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid #6c757d;
+}
+
+.tab:hover {
+    background-color:  #899499;
+}
+
+.tab.active {
+    background-color:  #899499;
+    color: #ffff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 5px 5px 5px;
+    border: 2px solid #6c757d;
+    margin-top: -1px; /* Connect content with active tab */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #708090;
+    color: white;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+form label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #36454F;
+}
+
+form input[type="date"],
+form select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 150px;
+    background-color: #f8f9fa;
+    color: #495057;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+form input[type="date"]:focus,
+form select:focus {
+    border-color: #899499;
+    box-shadow: 0 0 5px rgba(137, 148, 153, 0.8);
+    outline: none;
+}
+
+form button {
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #36454F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #899499;
+}

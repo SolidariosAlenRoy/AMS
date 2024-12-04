@@ -1,0 +1,164 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0; 
+}
+
+h2, h4, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for Sidebar and Main Content */
+.container {
+    display: flex;
+    height: 100vh; /* Full height */
+    margin-left: 290px; /* Account for the sidebar width */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    z-index: 100;
+}
+
+.sidebar h4 {
+    font-size: 26px;
+    color: #ffc107;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.nav ul {
+    list-style: none;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+}
+
+.nav ul li {
+    margin-bottom: 20px;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    color: #adb5bd;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav ul li a:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.header h1 {
+    color: #36454F;
+    font-size: 28px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Profile Bar Styles */
+.profile-bar {
+display: flex; 
+align-items: center; 
+gap: 10px;
+border-left: 1px solid #ced4da; 
+padding-left: 20px; 
+cursor: pointer;
+}
+
+/* Profile Picture and Info */
+.profile-picture {
+width: 40px; 
+height: 40px;
+border-radius: 50%; 
+}
+
+.profile-info {
+text-align: left; 
+}
+
+.profile-name {
+font-size: 16px; 
+margin: 0; 
+color: #333;
+}
+
+.profile-role {
+font-size: 12px;
+color: #6c757d;
+}
+
+/* Dropdown Styles */
+.profile-dropdown {
+display: none; /* Initially hidden */
+position: absolute; 
+top: 60px; /* Adjust the position to show below the profile */
+right: 20px;
+background-color: #fff;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+width: 150px;
+}
+
+.profile-dropdown a {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+
+.profile-dropdown a {
+border-bottom: 1px solid #ccc;
+}
+
+.profile-dropdown a {
+text-decoration: none;
+color: #333;
+display: block;
+padding: 10px;
+}
+
+.profile-dropdown a:hover {
+background-color: #f1f1f1;
+}
+
+/* Show dropdown when active */
+.profile-dropdown.show {
+display: block;
+}
