@@ -173,8 +173,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="css/vclassattendance.css" rel="stylesheet"> 
-    <script src="js/vclassattendance.js"></script>
+    <link href="css/vclassattendance1.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -219,40 +218,48 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </div>
 
 <!-- Class Attendance Tab Content -->
-<div class="tab-content active" id="classAttendance">
+    <div class="tab-content active" id="classAttendance">
                 <h3>View Class Attendance</h3>
-                <form id="classAttendanceForm" method="POST">
-                    <label for="attendanceDate">Date:</label>
-                    <input type="date" id="attendanceDate" name="attendance_date" required>
 
-                    <label for="yearLevelDropdown">Year Level:</label>
-                    <select name="year_level" id="yearLevelDropdown" required>
-                        <option value="">Select Year Level</option>
-                        <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
-                            <option value="<?= $row['year_level'] ?>"><?= $row['year_level'] ?></option>
-                        <?php endwhile; ?>
-                    </select>
+            <form id="classAttendanceForm" method="POST">
+                <label for="attendanceDate">Date:</label>
+                <input type="date" id="attendanceDate" name="attendance_date" value="<?= isset($_POST['attendance_date']) ? $_POST['attendance_date'] : '' ?>" required>
 
-                    <label for="sectionDropdown">Section:</label>
-                    <select name="section_id" id="sectionDropdown" required>
-                        <option value="">Select Section</option>
-                        <?php while ($row = $sections_result->fetch_assoc()) : ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['section_name'] ?></option>
-                        <?php endwhile; ?>
-                    </select>
+                <label for="yearLevelDropdown">Year Level:</label>
+                <select name="year_level" id="yearLevelDropdown" required>
+                    <option value="">Select Year Level</option>
+                    <?php while ($row = $year_levels_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['year_level'] ?>" <?= isset($_POST['year_level']) && $_POST['year_level'] == $row['year_level'] ? 'selected' : '' ?>>
+                        <?= $row['year_level'] ?>
+                    </option>
+                    <?php endwhile; ?>
+                </select>
 
-                    <label for="subjectDropdown">Subject:</label>
-                    <select name="subject_id" id="subjectDropdown" required>
-                        <option value="">Select Subject</option>
-                        <?php while ($row = $subjects_result->fetch_assoc()) : ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['subject_name'] ?></option>
-                        <?php endwhile; ?>
-                    </select>
+                <label for="sectionDropdown">Section:</label>
+                <select name="section_id" id="sectionDropdown" required>
+                    <option value="">Select Section</option>
+                    <?php while ($row = $sections_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['id'] ?>" <?= isset($_POST['section_id']) && $_POST['section_id'] == $row['id'] ? 'selected' : '' ?>>
+                        <?= $row['section_name'] ?>
+                    </option>
+                    <?php endwhile; ?>
+                </select>
 
-                    <button type="submit" name="view_class_attendance">View Attendance</button>
-                    <button type="submit" name="generate_class_pdf">Generate PDF</button>
-                    <button type="submit" name="generate_class_csv">Generate CSV</button>
-                </form>
+
+                <label for="subjectDropdown">Subject:</label>
+                <select name="subject_id" id="subjectDropdown" required>
+                <option value="">Select Subject</option>
+                    <?php while ($row = $subjects_result->fetch_assoc()) : ?>
+                <option value="<?= $row['id'] ?>" <?= isset($_POST['subject_id']) && $_POST['subject_id'] == $row['id'] ? 'selected' : '' ?>>
+                    <?= $row['subject_name'] ?>
+                </option>
+                <?php endwhile; ?>
+                </select>
+
+                <button type="submit" name="view_class_attendance">View Attendance</button>
+                <button type="submit" name="generate_class_pdf">Generate PDF</button>
+                <button type="submit" name="generate_class_csv">Generate CSV</button>
+            </form>
 
                 <table>
                     <thead>
@@ -290,16 +297,18 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
             <div class="tab-content" id="studentAttendance">
                 <h3>View Student Attendance</h3>
                 <form id="studentAttendanceForm" method="POST">
-                    <label for="attendanceDate">Date:</label>
-               
-     <input type="date" id="attendanceDate" name="attendance_date" required>
+                    <label for="attendanceDate">Date:</label>          
+                    <input type="date" id="attendanceDate" name="attendance_date" value="<?= htmlspecialchars($_POST['attendance_date'] ?? '') ?>" required>
 
-                    <label for="studentDropdown">Select Student:</label>
+
+                    <label for="studentDropdown">Student:</label>
                     <select name="student" id="studentDropdown" required>
-                        <option value="">Select Student</option>
-                        <?php while ($row = $students_result->fetch_assoc()) : ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                        <?php endwhile; ?>
+                    <option value="">Select Student</option>
+                    <?php while ($row = $students_result->fetch_assoc()) : ?>
+                    <option value="<?= $row['id'] ?>" <?= isset($_POST['student']) && $_POST['student'] == $row['id'] ? 'selected' : '' ?>>
+                        <?= $row['name'] ?>
+                    </option>
+                    <?php endwhile; ?>
                     </select>
 
                     <button type="submit" name="view_student_attendance">View Attendance</button>
@@ -340,5 +349,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
             </div>
         </main>
     </div>
+    <script src="js/vclassattendance.js"></script>
 </body>
 </html>

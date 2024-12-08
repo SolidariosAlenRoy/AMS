@@ -30,7 +30,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/teacherint.css" rel="stylesheet"> 
-    <script src="js/teacherint.js"></script>
 </head>
 <body>
     <div class="container">
@@ -125,5 +124,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </div>
 </main>
 </div>
+<script src="js/teacherint.js"></script>
 </body>
 </html>

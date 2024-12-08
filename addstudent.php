@@ -116,8 +116,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet"> 
-    <link rel="stylesheet" href="css/addstudent.css">
-    <script src="js/addstudent.js"></script>
+    <link rel="stylesheet" href="css/addstudent1.css">
 </head>
 <body>
     <div class="container">
@@ -240,5 +239,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
         </div>
     </main>
 </div>
+<script src="js/addstudent.js"></script>
 </body>
 </html>

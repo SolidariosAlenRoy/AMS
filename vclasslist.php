@@ -112,7 +112,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link href="css/vclasslist.css" rel="stylesheet">
-    <script src="js/vclasslist.js"></script>
 </head>
 <body>
 <div class="container">
@@ -195,6 +194,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
         </div>
     </main>
 </div>
-</script>
+<script src="js/vclasslist.js"></script>
 </body>
 </html>

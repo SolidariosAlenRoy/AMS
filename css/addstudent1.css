@@ -13,7 +13,7 @@ h2, h4, p, ul {
 /* Container for Sidebar and Main Content */
 .container {
     display: flex;
-    height: 100vh; /* Full height */
+    height: 100%; /* Full height */
     margin-left: 290px; /* Account for the sidebar width */
 }
 

@@ -98,36 +98,6 @@ body, h2, h4, p, ul {
     gap: 20px;
 }
 
-/* Search Bar */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
-    padding: 10px;
-    width: 300px;
-    height: 20px;
-    font-size: 16px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-}
-
-.search-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 15px;
-    height: 40px;
-    font-size: 16px;
-    background-color: #899499;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 /* Profile Bar Styles */
 .profile-bar {
     display: flex; 
@@ -294,7 +264,7 @@ form button {
     padding: 5px 15px;
     font-size: 14px;
     font-weight: bold;
-    background-color: #36454F;
+    background-color: #708090;
     color: #fff;
     border: none;
     border-radius: 5px;

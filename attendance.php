@@ -35,8 +35,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="css/attendance.css" rel="stylesheet">
-    <script src="js/attendance.js"></script>
+    <link rel="stylesheet" href="css/attendance1.css">
 </head>
 <body>
     <div class="container">
@@ -201,5 +200,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
             </div>
         </main>
     </div>
+    <script src="js/attendance.js"></script>
 </body>
 </html>
