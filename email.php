@@ -51,6 +51,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </head>
 <body>
     <div class="container">
+        
         <!-- Sidebar -->
         <aside class="sidebar">
     <img src="image/logo3.jpg" alt="Logo" class="logo"> 

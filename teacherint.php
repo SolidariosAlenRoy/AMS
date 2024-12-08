@@ -33,6 +33,10 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </head>
 <body>
     <div class="container">
+    <div class="example-box">
+        <div class="background-shapes">
+    </div>
+
         <!-- Sidebar -->
         <aside class="sidebar">
     <img src="image/logo3.jpg" alt="Logo" class="logo"> 
@@ -92,6 +96,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
                     <div class="dashboard-value"></div>
                 </div>
 
+
             <div class="info-container">
                 <!-- Recent Announcements -->
                 <div class="announcements">
@@ -123,6 +128,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </div>
 </div>
 </main>
+</div>
 </div>
 <script src="js/teacherint.js"></script>
 </body>
