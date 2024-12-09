@@ -35,11 +35,13 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/attendance1.css">
+    <link rel="stylesheet" href="css/tattendance.css">
 </head>
 <body>
     <div class="container">
-        
+    <div class="example-box">
+  <div class="background-shapes">
+  </div>
         <aside class="sidebar">
             <img src="image/logo3.jpg" alt="Logo" class="logo">
             <h4 class="text-primary">CLASS TRACK</h4>

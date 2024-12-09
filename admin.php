@@ -29,10 +29,14 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <link href="css/admin.css" rel="stylesheet">
+    <link href="css/admin1.css" rel="stylesheet">
+
 </head>
 <body>
     <div class="container">
+    <div class="example-box">
+  <div class="background-shapes">
+  </div>
         <!-- Sidebar -->
         <aside class="sidebar">
         <img src="image/logo3.jpg" alt="Logo" class="logo"> 

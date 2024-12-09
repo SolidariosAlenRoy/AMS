@@ -1,8 +1,13 @@
         /* Global Styles */
-        body, h2, h4, p, ul{
+        body{
             margin: 0;
             padding: 0; 
           
+        }
+        
+        h2, h4, p, ul {
+            margin: 0;
+            padding: 0;  
         }
         
         /* Container for Sidebar and Main Content */
@@ -173,7 +178,6 @@
             display: block;
         }
         
-        
         /* Card Container */
         .card-container {
             display: flex;
@@ -234,135 +238,233 @@
         }
         
         
-        /* Dropdown Common Styles */
-        select {
-          width: 460px; 
-          padding: 10px; 
-          border: 1px solid #ced4da;
-          border-radius: 5px; 
-          background-color: #fff; 
-          color: #333; 
-          font-size: 16px; 
-          appearance: none; 
-          cursor: pointer;
-        }
-        
-        select:hover {
-          border-color: #6c757d; 
-        }
-        
-        select:focus {
-          outline: none; 
-          border-color: #007bff; 
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        
-        select option {
-          padding: 10px; 
-        }
-        
-        /* Styling for the dropdown container */
-        .dropdown-container {
-          border: 2px solid #6c757d;
-          padding: 15px;
-          border-radius: 10px;
-          background-color: #f8f9fa;
-          margin-bottom: 20px;
-        }
-        
-        /* Styling for the dropdown row */
-        .dropdown-row {
-          display: flex;
-          justify-content: space-between;
-          gap: 10px;
-        }
-        
-        /* Label styling */
-        .label {
-          font-weight: bold;
-          color: #000;
-        }
-        
         /* Card Container */
         .card-container {
-                    display: flex;
-                    justify-content: center; 
-                    flex-wrap: wrap; 
-                    gap: 20px; 
-                    margin-top: 20px; 
-                }
+            display: flex;
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
         
-                /* Card Styling */
-                .card {
-                    background-color: #fff;
-                    border: 2px solid #6c757d;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin: 20px 0;
-                }
+        /* Dashboard Card */
+        .dashboard-card {
+            background-color: #7393B3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            min-width: 200px;
+            flex: 1 0 200px; 
+            max-width: 250px; 
+        }
         
-                .card h2 {
-                    font-size: 20px;
-                    margin-bottom: 15px;
-                    color: #007bff;
-                    border-bottom: 1px solid #ddd;
-                    padding-bottom: 10px;
-                }
+        .dashboard-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
         
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
-                }
-        
-                th, td {
-                    border: 1px solid #ced4da; 
-                    padding: 10px; 
-                    text-align: left;
-                }
-        
-                th {
-                    background-color: #708090;
-                    color: #fff;
-                }
-        
-                /* Button Styling */
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
+        .dashboard-title {
             font-size: 16px;
             text-transform: uppercase;
+            color: #36454F;
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-value {
+            font-size: 32px;
             font-weight: bold;
-            border: none;
-            border-radius: 5px;
+            color: #333;
+        }
+        
+        /* Info Container */
+        .info-container {
+            display: flex; 
+            justify-content: space-between; 
+            max-width: 1200px; 
+            width: 100%; 
+            margin: 20px auto; 
+            height: auto;   
+        }
+        
+        /* Announcements */
+        .announcements {
+            flex: 1; 
+            margin-right: 20px; 
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #6c757d;
+        }
+        
+        .announcements h3 {
+            text-align: center;
+        }
+        
+        .announcements li {
+            margin-left: 10px;
+        }
+        
+        /* Calendar Styles */
+        
+        
+        /* Calendar Styles */
+        .calendar-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            max-width: 450px;
+            margin: auto;
+            border: 2px solid #6c757d;
+        }
+        
+        .calendar-container header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 30px;
+        }
+        
+        header .calendar-navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        header .calendar-navigation span {
+            height: 38px;
+            width: 38px;
+            margin: 0 5px;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            margin-right: 10px; /* Add spacing between buttons */
+            text-align: center;
+            line-height: 38px;
+            border-radius: 50%;
+            color: #aeabab;
+            font-size: 1.5rem;
         }
         
-        /* Primary Button (CSV) */
-        .btn-primary {
-            background-color: #708090; /* Blue */
+        header .calendar-navigation span:hover {
+            background: #f2f2f2;
+        }
+        
+        .calendar-current-date {
+            font-weight: 500;
+            font-size: 1.45rem;
+        }
+        
+        .calendar-body {
+            padding: 10px 0;
+        }
+        
+        .calendar-body .calendar-weekdays, .calendar-body .calendar-dates {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .calendar-body .calendar-weekdays li {
+            width: calc(100% / 7);
+            text-align: center;
+            font-weight: 600;
+            color: #6c757d;
+            padding: 5px;
+        }
+        
+        .calendar-body .calendar-dates li {
+            width: calc(100% / 7);
+            font-size: 1.2rem;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .calendar-body .calendar-dates li:hover {
+            background: #f1f1f1;
+        }
+        
+        .calendar-body .calendar-dates li.active {
+            background-color: #6332c5;
             color: white;
+            border-radius: 50%;
         }
         
-        .btn-primary:hover {
-            background-color: #899499; /* Darker blue on hover */
+        .calendar-body .calendar-dates li.inactive {
+            color: #ccc;
         }
         
-        /* Secondary Button (PDF) */
-        .btn-secondary {
-            background-color: #708090; /* Gray */
-            color: white;
-        }
+        /* Add responsiveness */
+        @media (max-width: 768px) {
+            .calendar-container {
+                width: 100%;
+                padding: 15px;
+            }
         
-        .btn-secondary:hover {
-            background-color: #899499; /* Darker gray on hover */
-        }
+            header .calendar-navigation span {
+                font-size: 1.2rem;
+                height: 30px;
+                width: 30px;
+            }
         
-        /* Add some spacing to ensure buttons look good in forms */
-        form .btn {
-            margin-top: 20px;
-        }
-
+            .calendar-body .calendar-weekdays li, .calendar-body .calendar-dates li {
+                font-size: 1rem;
+            }
+        }   
         
+                .example-box {
+            background-image: linear-gradient(to bottom right, #cbcccc, #8ba0a9);
+            width: 100%;
+            height: 120vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            z-index: 1;
+          }
+          
+          .example-box * {
+            z-index: 2;
+          }
+          
+          .background-shapes {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 5076px;
+            background-size: 100%;
+            animation: 120s infiniteScroll linear infinite;
+            background-image: url(https://cdn2.hubspot.net/hubfs/53/Pricing%202017%20Assets/marketing/Header_Circles-1.svg);
+          }
+          
+          @-webkit-keyframes infiniteScroll {
+            0% {
+              -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0);
+            }
+          
+            100% {
+              -webkit-transform: translate3d(0, -1692px, 0);
+              transform: translate3d(0, -1692px, 0);
+            }
+          }
+          
+          @keyframes infiniteScroll {
+            0% {
+              -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0);
+            }
+          
+            100% {
+              -webkit-transform: translate3d(0, -1692px, 0);
+              transform: translate3d(0, -1692px, 0);
+            }
+          }

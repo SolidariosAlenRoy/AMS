@@ -46,12 +46,15 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <link href="css/email.css" rel="stylesheet"> 
+    <link href="css/email1.css" rel="stylesheet"> 
     <script src="js/email.js"></script>
+
 </head>
 <body>
     <div class="container">
-        
+    <div class="example-box">
+  <div class="background-shapes">
+  </div>
         <!-- Sidebar -->
         <aside class="sidebar">
     <img src="image/logo3.jpg" alt="Logo" class="logo"> 

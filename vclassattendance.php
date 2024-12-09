@@ -164,6 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -174,12 +176,68 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="css/vclassattendance1.css" rel="stylesheet">
+    <style>
+                .example-box {
+    background-image: linear-gradient(to bottom right, #cbcccc, #8ba0a9);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    z-index: 1;
+  }
+  
+  .example-box * {
+    z-index: 2;
+  }
+  
+  .background-shapes {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5076px;
+    background-size: 100%;
+    animation: 120s infiniteScroll linear infinite;
+    background-image: url(https://cdn2.hubspot.net/hubfs/53/Pricing%202017%20Assets/marketing/Header_Circles-1.svg);
+  }
+  
+  @-webkit-keyframes infiniteScroll {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    100% {
+      -webkit-transform: translate3d(0, -1692px, 0);
+      transform: translate3d(0, -1692px, 0);
+    }
+  }
+  
+  @keyframes infiniteScroll {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    100% {
+      -webkit-transform: translate3d(0, -1692px, 0);
+      transform: translate3d(0, -1692px, 0);
+    }
+  }
+    </style> 
 </head>
 <body>
     <div class="container">
     <div class="example-box">
-        <div class="background-shapes">
-    </div>
+  <div class="background-shapes">
+  </div>
         <!-- Sidebar -->
         <aside class="sidebar">
     <img src="image/logo3.jpg" alt="Logo" class="logo"> 
@@ -199,7 +257,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
             <div class="header">
                 <h1>View Class Attendance</h1>
                 <div class="header-content">
-                        <!-- Profile Bar -->
                 <div class="profile-bar" onclick="toggleDropdown(event)">
                     <img src="image/profile.png" alt="Profile Picture" class="profile-picture"> 
                     <div class="profile-info">
@@ -212,6 +269,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
                     <a href="login.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
                 </div>
+                
             </div>
 
             <div>
@@ -221,10 +279,9 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
 </div>
 
 <!-- Class Attendance Tab Content -->
-    <div class="tab-content active" id="classAttendance">
+<div class="tab-content active" id="classAttendance">
                 <h3>View Class Attendance</h3>
-
-            <form id="classAttendanceForm" method="POST">
+                <form id="classAttendanceForm" method="POST">
                 <label for="attendanceDate">Date:</label>
                 <input type="date" id="attendanceDate" name="attendance_date" value="<?= isset($_POST['attendance_date']) ? $_POST['attendance_date'] : '' ?>" required>
 
@@ -318,7 +375,6 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
                     <button type="submit" name="generate_student_pdf">Generate PDF</button>
                     <button type="submit" name="generate_student_csv">Generate CSV</button>
                 </form>
-
                 <table>
                     <thead>
                         <tr>
@@ -352,6 +408,12 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
             </div>
         </main>
     </div>
+
     <script src="js/vclassattendance.js"></script>
+
+
+    
+
+    
 </body>
 </html>

@@ -11,8 +11,9 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <link rel="stylesheet" href="css/sched.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="css/view_schedule.css" rel="stylesheet">
+    <link href="css/view_schedule1.css" rel="stylesheet">
     <script src="js/view_schedule.js"></script>
+
 </head>
 <body>
 <div class="container">

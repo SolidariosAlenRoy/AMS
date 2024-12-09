@@ -29,7 +29,8 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <link href="css/teacherint.css" rel="stylesheet"> 
+    <link href="css/teacherint1.css" rel="stylesheet">
+
 </head>
 <body>
     <div class="container">
