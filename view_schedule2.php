@@ -14,7 +14,11 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <link href="css/view_schedule2.css" rel="stylesheet">
     <script src="js/view_schedule2.js"></script>
 </head>
+
 <body>
+<div class="example-box">
+        <div class="background-shapes">
+    </div>
 <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">

@@ -1,9 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url(image/loginbg2.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,12 +9,13 @@ body {
 
 .container {
     display: flex;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(220, 220, 220, 0.4);
     border-radius: 20px;
     width: 800px;
     overflow: hidden;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6), 
-                0 0 25px rgba(0, 255, 0, 0.4);   
+    box-shadow: 0 0 15px rgba(50, 50, 50, 0.6), 
+            0 0 25px rgba(20, 20, 20, 0.4);
+
 }
 
 .logo-container, .card {
@@ -32,8 +29,9 @@ body {
 
 .logo-container {
     background-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6), 
-                0 0 25px rgba(0, 255, 0, 0.4);   
+    box-shadow: 0 0 15px rgba(50, 50, 50, 0.6), 
+            0 0 25px rgba(20, 20, 20, 0.4);
+
 }
 
 .logo-container img {
@@ -45,8 +43,9 @@ body {
 .card {
     text-align: center;
     background-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.6), 
-                0 0 25px rgba(0, 255, 0, 0.4);  
+    box-shadow: 0 0 15px rgba(50, 50, 50, 0.6), 
+            0 0 25px rgba(20, 20, 20, 0.4);
+
 }
 
 h2 {
@@ -86,3 +85,58 @@ button:hover {
     color: red;
     margin-top: 10px;
 }
+
+.example-box {
+    background-image: linear-gradient(to bottom right, #cbcccc, #8ba0a9);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    z-index: 1;
+  }
+  
+  .example-box * {
+    z-index: 2;
+  }
+  
+  .background-shapes {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5076px;
+    background-size: 100%;
+    animation: 120s infiniteScroll linear infinite;
+    background-image: url(https://cdn2.hubspot.net/hubfs/53/Pricing%202017%20Assets/marketing/Header_Circles-1.svg);
+  }
+  
+  @-webkit-keyframes infiniteScroll {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    100% {
+      -webkit-transform: translate3d(0, -1692px, 0);
+      transform: translate3d(0, -1692px, 0);
+    }
+  }
+  
+  @keyframes infiniteScroll {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    100% {
+      -webkit-transform: translate3d(0, -1692px, 0);
+      transform: translate3d(0, -1692px, 0);
+    }
+  }

@@ -53,6 +53,9 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
 </head>
 <body>
     <div class="container">
+    <div class="example-box">
+        <div class="background-shapes">
+    </div>
         <!-- Sidebar -->
         <aside class="sidebar">
         <img src="image/logo3.jpg" alt="Logo" class="logo"> 

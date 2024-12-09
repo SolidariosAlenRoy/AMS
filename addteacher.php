@@ -59,6 +59,9 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <script src="js/addteacher.js"></script>
 </head>
 <body>
+<div class="example-box">
+        <div class="background-shapes">
+    </div>
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
