@@ -29,7 +29,7 @@ if (isset($_GET['delete_id'])) {
 
     if ($stmt->execute()) {
         $success_message = "Teacher deleted successfully!";
-        header("Location: manage_teachers.php"); // Refresh the page to reflect the deletion
+        header("Location: addteacher.php"); // Refresh the page to reflect the deletion
         exit;
     } else {
         $error_message = "Error: " . $stmt->error;
@@ -103,7 +103,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
         <input type="text" name="name" placeholder="Teacher Name" required>
         <input type="email" name="email" placeholder="Email">
         <input type="text" name="contact_number" placeholder="Contact Number">
-        <button type="submit">Add Teacher</button>
+        <button type="submit" name="add_teacher">Add Teacher</button>
     </form>
 
     <!-- Teachers List -->
