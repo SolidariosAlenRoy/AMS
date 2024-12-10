@@ -175,63 +175,8 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
     <!-- FontAwesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="css/vclassattendance1.css" rel="stylesheet">
-    <style>
-                .example-box {
-    background-image: linear-gradient(to bottom right, #cbcccc, #8ba0a9);
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    background-size: cover;
-    z-index: 1;
-  }
-  
-  .example-box * {
-    z-index: 2;
-  }
-  
-  .background-shapes {
-    content: "";
-    position: absolute;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 5076px;
-    background-size: 100%;
-    animation: 120s infiniteScroll linear infinite;
-    background-image: url(https://cdn2.hubspot.net/hubfs/53/Pricing%202017%20Assets/marketing/Header_Circles-1.svg);
-  }
-  
-  @-webkit-keyframes infiniteScroll {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  
-    100% {
-      -webkit-transform: translate3d(0, -1692px, 0);
-      transform: translate3d(0, -1692px, 0);
-    }
-  }
-  
-  @keyframes infiniteScroll {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  
-    100% {
-      -webkit-transform: translate3d(0, -1692px, 0);
-      transform: translate3d(0, -1692px, 0);
-    }
-  }
-    </style> 
+    <link href="css/vclassattendance2.css" rel="stylesheet">
+
 </head>
 <body>
     <div class="container">
