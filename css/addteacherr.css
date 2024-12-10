@@ -179,6 +179,7 @@
             display: block;
         }
         
+        
         /* Form */
         .form-container-wrapper {
             border: 2px solid #6c757d;
@@ -191,7 +192,10 @@
         
         /* Input Fields */
         form
-        input[type="text"] {
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select {
             width: 15%; /* Adjust width to fill container */
             max-width: 300px; /* Add max width for better control */
             padding: 5px;
@@ -204,7 +208,10 @@
         }
         
         /* Focus Effect for Input Fields */
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus {
             outline: none;
             border-color: #6c757d;
         }
@@ -274,22 +281,22 @@
         }
         
         /* Edit Button Style */
-        td a[href*="subject.php"] {
+        td a[href*="editteacher.php"] {
             background-color: #28a745; /* Green for Edit */
             color: white;
         }
         
-        td a[href*="subject.php"]:hover {
+        td a[href*="editteacher.php"]:hover {
             background-color: #218838; /* Darker green for hover */
         }
         
         /* Delete Button Style */
-        td a[href*="subject.php?delete_id"] {
+        td a[href*="addteacher.php?delete_id"] {
             background-color: #dc3545; /* Red for Delete */
             color: white;
         }
         
-        td a[href*="subject.php?delete_id"]:hover {
+        td a[href*="addteacher.php?delete_id"]:hover {
             background-color: #c82333; /* Darker red for hover */
         }
         

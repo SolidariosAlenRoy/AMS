@@ -77,7 +77,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
             </div>
 
             <div class="card">
-        <h2>REGISTER</h2>
+        <h2>REGISTRATION</h2>
         <form method="POST" action="register.php">
             <input type="text" name="username" placeholder="Username" autocomplete="new-username" required>
             <input type="password" name="password" placeholder="Password" autocomplete="new-password" required>

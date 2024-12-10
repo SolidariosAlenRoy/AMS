@@ -134,7 +134,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <!-- External CSS -->
-    <link href="css/editstudent.css" rel="stylesheet"> 
+    <link href="css/editstudent1.css" rel="stylesheet"> 
     <!-- External JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
     <script src="js/editstudent.js"></script>

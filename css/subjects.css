@@ -179,21 +179,19 @@ h2, h4, p, ul {
     display: block;
 }
 
-
+/* Form */
 .form-container-wrapper {
     border: 2px solid #6c757d;
     padding: 20px;
     border-radius: 8px;
     background-color: #f8f9fa;
     margin-bottom: 20px;
+    width: 1163px;
 }
 
 /* Input Fields */
 form
-input[type="text"],
-input[type="email"],
-input[type="number"],
-select {
+input[type="text"] {
     width: 15%; /* Adjust width to fill container */
     max-width: 300px; /* Add max width for better control */
     padding: 5px;
@@ -206,42 +204,7 @@ select {
 }
 
 /* Focus Effect for Input Fields */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="number"]:focus,
-select:focus {
-    outline: none;
-    border-color: #6c757d;
-}
-
-/* Subject Checkboxes */
-label[for="subjects"] {
-    font-weight: bold;
-    margin-top: 5px;
-    display: block;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-/* Dropdown */
-select {
-    width: 17%; /* Ensure dropdown takes full width */
-    max-width: 300px; /* Add max width for better control */
-    padding: 5px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #fff;
-    color: #333;
-}
-
-select:focus {
+input[type="text"]:focus {
     outline: none;
     border-color: #6c757d;
 }
@@ -260,6 +223,79 @@ button {
 
 button:hover {
     background-color: #899499;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+th, td {
+    border: 1px solid #ced4da;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: #708090;
+    font-weight: bold;
+    color: #fff;
+}
+
+td select {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Edit and Delete Links */
+td {
+    text-align: center; /* Center align the action buttons */
+}
+
+td a {
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Edit Button Style */
+td a[href*="subject.php"] {
+    background-color: #28a745; /* Green for Edit */
+    color: white;
+}
+
+td a[href*="subject.php"]:hover {
+    background-color: #218838; /* Darker green for hover */
+}
+
+/* Delete Button Style */
+td a[href*="subject.php?delete_id"] {
+    background-color: #dc3545; /* Red for Delete */
+    color: white;
+}
+
+td a[href*="subject.php?delete_id"]:hover {
+    background-color: #c82333; /* Darker red for hover */
+}
+
+/* Additional Style for Action Links */
+td a:hover {
+    cursor: pointer;
 }
 
 .example-box {

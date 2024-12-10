@@ -91,6 +91,12 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Teacher';
                 </div>
                 </div>
             </div>
+
+            <div class="back-button-container">
+                    <button onclick="window.history.back();" class="back-button">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                </div>
 <!-- Table to Display Absent Students -->
 <div class="card">
                 <table id="absentStudentsTable" class="display">

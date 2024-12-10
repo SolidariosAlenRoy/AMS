@@ -80,7 +80,7 @@ $userName = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
     <!-- FullCalendar CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <link href="css/subject.css" rel="stylesheet"> 
+    <link href="css/subjects.css" rel="stylesheet"> 
     <script src="js/subject.js"></script>
 </head>
 <body>
